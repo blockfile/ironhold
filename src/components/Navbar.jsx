@@ -33,6 +33,8 @@ export default function Navbar() {
         )
     );
 
+    const isMobileViewport = () => window.innerWidth <= 720;
+
     useEffect(() => {
         let frameId = 0;
 
@@ -43,6 +45,18 @@ export default function Navbar() {
             const scrollingUp = delta < 0;
 
             setScrolled(y > 8);
+
+            if (isMobileViewport()) {
+                if (navHiddenRef.current) {
+                    navHiddenRef.current = false;
+                    setNavHidden(false);
+                }
+
+                applyNavVisibility(1);
+                lastScrollY.current = y;
+                frameId = window.requestAnimationFrame(tick);
+                return;
+            }
 
             if (menuOpen) {
                 if (navHiddenRef.current) {
@@ -114,45 +128,47 @@ export default function Navbar() {
     const closeMenu = () => setMenuOpen(false);
 
     return (
-        <header
-            className={`ih-nav ${scrolled ? "ih-nav--solid" : ""} ${menuOpen ? "ih-nav--menuOpen" : ""} ${navHidden && !menuOpen ? "ih-nav--hidden" : ""}`}
-        >
-            <div className="ih-container ih-navInner" ref={navInnerRef}>
-                <div className="ih-navCapsule">
-                    <a className="ih-logo" href="#top" aria-label="Ironhold Home">
-                        <span className="ih-logoMark">
-                            <img className="ih-logoImage" src="/logo2.png" alt="Ironhold logo" width="92" height="92" />
-                        </span>
-                        <span className="ih-logoText">IRONHOLD</span>
-                    </a>
+        <>
+            <header
+                className={`ih-nav ${scrolled ? "ih-nav--solid" : ""} ${menuOpen ? "ih-nav--menuOpen" : ""} ${navHidden && !menuOpen ? "ih-nav--hidden" : ""}`}
+            >
+                <div className="ih-container ih-navInner" ref={navInnerRef}>
+                    <div className="ih-navCapsule">
+                        <a className="ih-logo" href="#top" aria-label="Ironhold Home">
+                            <span className="ih-logoMark">
+                                <img className="ih-logoImage" src="/logo2.png" alt="Ironhold logo" width="92" height="92" />
+                            </span>
+                            <span className="ih-logoText">IRONHOLD</span>
+                        </a>
 
-                    <div className="ih-navReveal">
-                        <nav className="ih-navLinks" aria-label="Primary">
-                            {navItems.map((item) => (
-                                <a href={item.href} key={item.href}>{item.label}</a>
-                            ))}
-                        </nav>
+                        <div className="ih-navReveal">
+                            <nav className="ih-navLinks" aria-label="Primary">
+                                {navItems.map((item) => (
+                                    <a href={item.href} key={item.href}>{item.label}</a>
+                                ))}
+                            </nav>
 
-                        <div className="ih-navDesktopActions">
-                            <button className="ih-btn ih-btn--secondary" type="button">Documentation</button>
-                            <button className="ih-btn ih-btn--primary" type="button">Buy</button>
+                            <div className="ih-navDesktopActions">
+                                <button className="ih-btn ih-btn--secondary" type="button">Documentation</button>
+                                <button className="ih-btn ih-btn--primary" type="button">Buy</button>
+                            </div>
                         </div>
-                    </div>
 
-                    <button
-                        className={`ih-navToggle ${menuOpen ? "is-open" : ""}`}
-                        type="button"
-                        aria-expanded={menuOpen}
-                        aria-controls="ih-mobile-menu"
-                        aria-label={menuOpen ? "Close menu" : "Open menu"}
-                        onClick={() => setMenuOpen((open) => !open)}
-                    >
-                        <span />
-                        <span />
-                        <span />
-                    </button>
+                        <button
+                            className={`ih-navToggle ${menuOpen ? "is-open" : ""}`}
+                            type="button"
+                            aria-expanded={menuOpen}
+                            aria-controls="ih-mobile-menu"
+                            aria-label={menuOpen ? "Close menu" : "Open menu"}
+                            onClick={() => setMenuOpen((open) => !open)}
+                        >
+                            <span />
+                            <span />
+                            <span />
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </header>
 
             <button
                 className={`ih-navBackdrop ${menuOpen ? "is-open" : ""}`}
@@ -186,6 +202,6 @@ export default function Navbar() {
                     <button className="ih-btn ih-btn--primary" type="button">Buy</button>
                 </div>
             </div>
-        </header>
+        </>
     );
 }

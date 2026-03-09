@@ -2655,6 +2655,20 @@ a {
     min-height: 76px;
   }
 
+  .ih-nav,
+  .ih-nav--hidden,
+  .ih-nav--solid,
+  .ih-nav--menuOpen {
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .ih-nav--menuOpen .ih-navInner {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+
   .ih-loaderCore {
     width: min(320px, calc(100% - 36px));
     gap: 14px;
@@ -2743,10 +2757,11 @@ a {
     display: block;
     position: fixed;
     top: 0;
-    bottom: 0;
     right: 0;
     left: 0;
     width: 100vw;
+    height: 100vh;
+    height: 100dvh;
     z-index: 59;
     background: rgba(12, 16, 22, 0.995);
     border-left: 0;
