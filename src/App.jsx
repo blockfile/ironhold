@@ -10,6 +10,7 @@ import WhitepaperIntelligence from "./components/WhitepaperIntelligence";
 import ScrambleText from "./components/ScrambleText";
 import Footer from "./components/Footer";
 import LoadingScreen from "./components/LoadingScreen";
+import AmbientHighlights from "./components/AmbientHighlights";
 import { popIn, riseSoft, stagger, viewport } from "./lib/motion";
 
 const LOADER_DURATION_MS = 4000;
@@ -51,6 +52,7 @@ export default function App() {
 
       {showApp ? (
         <div className="ih-app">
+          <AmbientHighlights />
           <Navbar />
           <main>
             <Hero />

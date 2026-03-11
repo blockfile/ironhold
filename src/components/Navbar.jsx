@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 
+const MOBILE_NAV_BREAKPOINT = 767;
+
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
-    const [menuOpen, setMenuOpen] = useState(false);
     const [navHidden, setNavHidden] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
     const lastScrollY = useRef(0);
     const navHiddenRef = useRef(false);
-    const navInnerRef = useRef(null);
     const navItems = [
         { href: "#calculator", label: "Calculator" },
         { href: "#whitepaper", label: "Whitepaper" },
@@ -16,89 +17,56 @@ export default function Navbar() {
         { href: "#contact", label: "Contact" }
     ];
 
-    const applyNavVisibility = (visibility) => {
-        const navInner = navInnerRef.current;
-
-        if (navInner) {
-            navInner.style.opacity = String(visibility);
-            navInner.style.transform = `translateY(${(1 - visibility) * -18}px) scale(${0.92 + (visibility * 0.08)})`;
-        }
-    };
-
-    const getScrollTop = () => (
-        Math.max(
-            window.scrollY || 0,
-            document.documentElement?.scrollTop || 0,
-            document.body?.scrollTop || 0
-        )
-    );
-
-    const isMobileViewport = () => window.innerWidth <= 720;
-
     useEffect(() => {
         let frameId = 0;
 
+        const getScrollTop = () => (
+            Math.max(
+                window.scrollY || 0,
+                document.documentElement?.scrollTop || 0,
+                document.body?.scrollTop || 0
+            )
+        );
+
+        const setNavHiddenState = (nextHidden) => {
+            if (navHiddenRef.current === nextHidden) return;
+
+            navHiddenRef.current = nextHidden;
+            setNavHidden(nextHidden);
+        };
+
         const tick = () => {
-            const y = getScrollTop();
-            const delta = y - lastScrollY.current;
-            const scrollingDown = delta > 0;
-            const scrollingUp = delta < 0;
+            const currentY = getScrollTop();
+            const delta = currentY - lastScrollY.current;
+            const isMobileViewport = window.innerWidth < 768;
 
-            setScrolled(y > 8);
+            setScrolled(currentY > 10);
 
-            if (isMobileViewport()) {
-                if (navHiddenRef.current) {
-                    navHiddenRef.current = false;
-                    setNavHidden(false);
-                }
-
-                applyNavVisibility(1);
-                lastScrollY.current = y;
+            if (menuOpen || isMobileViewport) {
+                setNavHiddenState(false);
+                lastScrollY.current = currentY;
                 frameId = window.requestAnimationFrame(tick);
                 return;
             }
 
-            if (menuOpen) {
-                if (navHiddenRef.current) {
-                    navHiddenRef.current = false;
-                    setNavHidden(false);
-                }
-                applyNavVisibility(1);
-                lastScrollY.current = y;
-                return;
+            if (currentY <= 24) {
+                setNavHiddenState(false);
+            } else if (delta > 2) {
+                setNavHiddenState(true);
+            } else if (delta < -2) {
+                setNavHiddenState(false);
             }
 
-            if (y < 16) {
-                if (navHiddenRef.current) {
-                    navHiddenRef.current = false;
-                    setNavHidden(false);
-                }
-                applyNavVisibility(1);
-            } else if (scrollingDown) {
-                const visibility = Math.max(0, 1 - Math.min(y, 150) / 150);
-                applyNavVisibility(visibility);
-
-                const shouldHide = y > 148;
-                if (shouldHide !== navHiddenRef.current) {
-                    navHiddenRef.current = shouldHide;
-                    setNavHidden(shouldHide);
-                }
-            } else if (scrollingUp) {
-                if (navHiddenRef.current) {
-                    navHiddenRef.current = false;
-                    setNavHidden(false);
-                }
-                applyNavVisibility(1);
-            }
-
-            lastScrollY.current = y;
+            lastScrollY.current = currentY;
             frameId = window.requestAnimationFrame(tick);
         };
 
         lastScrollY.current = getScrollTop();
-        applyNavVisibility(1);
         frameId = window.requestAnimationFrame(tick);
-        return () => window.cancelAnimationFrame(frameId);
+
+        return () => {
+            window.cancelAnimationFrame(frameId);
+        };
     }, [menuOpen]);
 
     useEffect(() => {
@@ -110,7 +78,11 @@ export default function Navbar() {
 
     useEffect(() => {
         const onResize = () => {
-            if (window.innerWidth > 720) setMenuOpen(false);
+            if (window.innerWidth > MOBILE_NAV_BREAKPOINT) {
+                setMenuOpen(false);
+                navHiddenRef.current = false;
+                setNavHidden(false);
+            }
         };
 
         const onKeyDown = (event) => {
@@ -131,8 +103,9 @@ export default function Navbar() {
         <>
             <header
                 className={`ih-nav ${scrolled ? "ih-nav--solid" : ""} ${menuOpen ? "ih-nav--menuOpen" : ""} ${navHidden && !menuOpen ? "ih-nav--hidden" : ""}`}
+                style={navHidden && !menuOpen ? { transform: "translateY(-115%)", opacity: 0, pointerEvents: "none" } : undefined}
             >
-                <div className="ih-container ih-navInner" ref={navInnerRef}>
+                <div className="ih-container ih-navInner">
                     <div className="ih-navCapsule">
                         <a className="ih-logo" href="#top" aria-label="Ironhold Home">
                             <span className="ih-logoMark">

@@ -20,23 +20,39 @@ function formatNumber(value, maxDigits = 2) {
   return new Intl.NumberFormat("en-US", { maximumFractionDigits: maxDigits }).format(value);
 }
 
+function formatCurrency(value) {
+  if (!Number.isFinite(value)) return "Overflow";
+  if (Math.abs(value) >= 1e15) return `$${value.toExponential(2)}`;
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 2
+  }).format(value);
+}
+
 export default function GrowthCalculator() {
   const [startingBalance, setStartingBalance] = useState("1000");
-  const [projectionYears, setProjectionYears] = useState("1");
+  const [projectionMonths, setProjectionMonths] = useState("12");
+  const [tokenPrice, setTokenPrice] = useState("");
 
   const metrics = useMemo(() => {
     const principal = parsePositiveNumber(startingBalance);
-    const years = parsePositiveNumber(projectionYears);
-    const projectedBalance = principal * Math.pow(1 + PER_CYCLE_RATE, Math.round(years * CYCLES_PER_YEAR));
+    const months = parsePositiveNumber(projectionMonths);
+    const hasTokenPrice = tokenPrice.trim() !== "";
+    const parsedTokenPrice = parsePositiveNumber(tokenPrice);
+    const projectedBalance = principal * Math.pow(1 + PER_CYCLE_RATE, Math.round((months / 12) * CYCLES_PER_YEAR));
     const netTokenGrowth = projectedBalance - principal;
     const growthMultiple = principal > 0 ? projectedBalance / principal : 0;
+    const estimatedUsdValue = hasTokenPrice ? projectedBalance * parsedTokenPrice : null;
 
     return {
+      estimatedUsdValue,
+      parsedTokenPrice,
       projectedBalance,
       netTokenGrowth,
       growthMultiple
     };
-  }, [projectionYears, startingBalance]);
+  }, [projectionMonths, startingBalance, tokenPrice]);
 
   return (
     <motion.div
@@ -98,14 +114,14 @@ export default function GrowthCalculator() {
           </label>
 
           <label className="ih-calcField">
-            <span>Projection horizon (years)</span>
+            <span>Projection horizon (months)</span>
             <input
               type="number"
               min="0"
-              max="10"
-              step="0.1"
-              value={projectionYears}
-              onChange={(event) => setProjectionYears(event.target.value)}
+              max="120"
+              step="1"
+              value={projectionMonths}
+              onChange={(event) => setProjectionMonths(event.target.value)}
             />
           </label>
         </div>
@@ -118,6 +134,31 @@ export default function GrowthCalculator() {
           <div className="ih-calcStatLabel">Projected $IHOLD balance</div>
           <div className="ih-calcStatValue">{formatNumber(metrics.projectedBalance, 4)}</div>
         </motion.div>
+
+        <div className="ih-calcValueGrid">
+          <label className="ih-calcField">
+            <span>$IHOLD price per token</span>
+            <input
+              type="number"
+              min="0"
+              step="0.000001"
+              placeholder="Enter token price"
+              value={tokenPrice}
+              onChange={(event) => setTokenPrice(event.target.value)}
+            />
+          </label>
+
+          <motion.div
+            className="ih-calcStat ih-calcStat--value"
+            whileHover={{ y: -2, scale: 1.005 }}
+            transition={{ duration: 0.45, ease: [0.2, 0.75, 0.2, 1] }}
+          >
+            <div className="ih-calcStatLabel">Estimated USD value</div>
+            <div className="ih-calcStatValue">
+              {metrics.estimatedUsdValue === null ? "Enter token price" : formatCurrency(metrics.estimatedUsdValue)}
+            </div>
+          </motion.div>
+        </div>
 
         <div className="ih-calcStatsGrid">
           <motion.div
