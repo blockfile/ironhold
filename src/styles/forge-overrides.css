@@ -63,10 +63,13 @@ body {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.035;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.5) 0.5px, transparent 0.6px);
-  background-size: 5px 5px;
-  mix-blend-mode: soft-light;
+  opacity: 0.072;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.36) 1px, transparent 1.35px),
+    radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1.5px);
+  background-position: 0 0, 3px 4px;
+  background-size: 6px 6px, 11px 11px;
+  mix-blend-mode: screen;
 }
 
 .ih-bgOverlay {
@@ -85,10 +88,13 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.08;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.8) 0.6px, transparent 0.7px);
-  background-size: 4px 4px;
-  mix-blend-mode: screen;
+  opacity: 0.11;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.24) 1px, transparent 1.35px),
+    radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1.6px);
+  background-position: 0 0, 2px 6px;
+  background-size: 5px 5px, 13px 13px;
+  mix-blend-mode: soft-light;
 }
 
 .ih-app main,
@@ -1041,10 +1047,13 @@ body {
 }
 
 .ih-browser-chrome .ih-bgOverlay::after {
-  opacity: 0.08;
-  mix-blend-mode: screen;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.8) 0.6px, transparent 0.7px);
-  background-size: 4px 4px;
+  opacity: 0.11;
+  mix-blend-mode: soft-light;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.24) 1px, transparent 1.35px),
+    radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1.6px);
+  background-position: 0 0, 2px 6px;
+  background-size: 5px 5px, 13px 13px;
 }
 
 @media (max-width: 1023px) {
