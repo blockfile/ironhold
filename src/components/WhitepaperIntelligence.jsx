@@ -33,9 +33,9 @@ export default function WhitepaperIntelligence() {
   return (
     <motion.div className="ih-wpSummary" variants={stagger} initial="hidden" whileInView="show" viewport={viewport}>
       <motion.div className="ih-wpSummaryIntro" variants={popIn}>
-        <motion.div className="ih-wpBadge" variants={riseSoft}>Whitepaper Summary</motion.div>
+        <motion.div className="ih-wpBadge" variants={riseSoft}>Whitepaper</motion.div>
         <motion.h3 className="ih-wpSummaryTitle" variants={riseSoft}>
-          Protocol mechanics, condensed.
+          Protocol mechanics
         </motion.h3>
         <motion.p className="ih-wpLead" variants={riseSoft}>
           Ironhold is built around fixed-supply structure, proportional distribution, and liquidity-first design.

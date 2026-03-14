@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./styles/ironhold.css";
+import "./styles/forge-overrides.css";
 
 const userAgent = window.navigator.userAgent;
 const isChrome = /Chrome|Chromium|CriOS/.test(userAgent) && !/Edg|OPR|Opera|Firefox|FxiOS/.test(userAgent);

@@ -70,13 +70,12 @@ export default function Hero() {
       <div className="ih-container ih-heroGrid">
         <motion.div className="ih-heroLeft" variants={stagger} initial="hidden" animate="show">
           <motion.div className="ih-eyebrow" variants={riseSoft}>PRIVATE PROTOCOL INFRASTRUCTURE</motion.div>
-          <motion.h1
-            className="ih-heroTitle ih-metalGradient ih-metalShine"
-            variants={riseSoft}
-            data-text="IRONHOLD"
-          >
-            IRONHOLD
-          </motion.h1>
+          <motion.div className="ih-heroTitleBlock" variants={riseSoft}>
+            <h1 className="ih-heroTitle ih-metalGradient ih-metalShine" data-text="IRONHOLD">
+              IRONHOLD
+            </h1>
+            <span className="ih-slashAccent" aria-hidden="true" />
+          </motion.div>
           <motion.p className="ih-heroStatement ih-heroStatement--thin" variants={riseSoft}>Built to Hold.</motion.p>
           <motion.p className="ih-heroStatement ih-heroStatement--heavy ih-metalGradient" variants={riseSoft}>
             Engineered for Stability.

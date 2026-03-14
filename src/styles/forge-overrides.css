@@ -1,0 +1,1279 @@
+:root {
+  --gold-rgb: 217, 166, 43;
+  --ih-content-rail: 1180px;
+  --ih-metal-text: linear-gradient(
+    180deg,
+    #f5f5f5 0%,
+    #c9c9c9 20%,
+    #8f8f8f 45%,
+    #4a4a4a 60%,
+    #9a9a9a 75%,
+    #e8e8e8 100%
+  );
+  --ih-gold-text: linear-gradient(180deg, #f4cf63 0%, #d79d20 45%, #a86e10 100%);
+  --ih-panel-bg:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.04), transparent 30%),
+    linear-gradient(180deg, rgba(18, 18, 20, 0.9), rgba(7, 7, 8, 0.97));
+  --ih-panel-border: rgba(255, 255, 255, 0.08);
+  --ih-panel-shadow:
+    inset 0 1px 0 rgba(244, 207, 99, 0.14),
+    inset 0 1px 10px rgba(255, 255, 255, 0.03),
+    0 0 40px rgba(255, 255, 255, 0.03);
+}
+
+html,
+body {
+  background: #050505;
+}
+
+body {
+  min-height: 100vh;
+  background: #050505;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.ih-app {
+  position: relative;
+  isolation: isolate;
+}
+
+.ih-app::before {
+  content: none;
+}
+
+.ih-app::after {
+  content: none;
+}
+
+.ih-forgeScene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ih-forgeScene canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.ih-bgNoise {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.5) 0.5px, transparent 0.6px);
+  background-size: 5px 5px;
+  mix-blend-mode: soft-light;
+}
+
+.ih-bgOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.05), transparent 18%),
+    radial-gradient(circle at 75% 70%, rgba(255, 255, 255, 0.04), transparent 20%),
+    radial-gradient(circle at 48% 16%, rgba(255, 165, 58, 0.07), transparent 16%),
+    radial-gradient(circle at center, transparent 38%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.ih-bgOverlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.8) 0.6px, transparent 0.7px);
+  background-size: 4px 4px;
+  mix-blend-mode: screen;
+}
+
+.ih-app main,
+.ih-footer {
+  position: relative;
+  z-index: 4;
+}
+
+.ih-app main {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ih-app main > .ih-section > .ih-container {
+  width: min(var(--ih-content-rail), calc(100% - clamp(24px, 4vw, 64px)));
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.ih-ambientCanvas,
+.ih-heroRadial,
+.ih-heroBackdrop,
+.ih-heroBeams,
+.ih-noise,
+.ih-shape,
+.ih-heroScrollCue,
+.ih-calcDecor {
+  display: none !important;
+}
+
+.ih-section::before,
+.ih-section::after,
+.ih-sectionTop::after,
+.ih-grid::before,
+.ih-grid::after,
+.ih-card::before,
+.ih-card::after,
+.ih-cardLine,
+.ih-scramble::after,
+#foundation .ih-sectionBeam::after,
+#foundation .ih-scramble.is-done::before,
+.ih-logo::before,
+.ih-logo::after,
+.ih-heroLogoGhost::before,
+.ih-heroLogoGhost::after,
+.ih-heroTitle.ih-metalShine::before,
+.ih-heroTitle.ih-metalShine::after,
+.ih-heroNote::before,
+.ih-heroNote::after {
+  display: none !important;
+  content: none !important;
+}
+
+.ih-app :is(
+  p,
+  li,
+  label,
+  dt,
+  dd,
+  th,
+  td,
+  small,
+  span,
+  div
+) {
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.ih-app main .ih-sectionBody p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+.ih-app main .ih-sectionBody li {
+  text-align: left;
+}
+
+.ih-eyebrow,
+.ih-cardTag,
+.ih-cardMetric,
+.ih-chip,
+.ih-kpiLabel,
+.ih-navLinks,
+.ih-footerLinks,
+.ih-navMobileHeaderText span,
+.ih-navMobileLinks a,
+.ih-calcMetaTitle,
+.ih-calcPanelRate,
+.ih-wpBadge,
+.ih-miniLabels span,
+.ih-protocolMetaKey {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.ih-sectionTop .ih-eyebrow {
+  color: rgba(244, 207, 99, 0.82);
+  text-shadow: 0 0 12px rgba(255, 180, 77, 0.08);
+}
+
+.ih-body,
+.ih-cardDesc,
+.ih-wpLead,
+.ih-wpSummaryNotice p,
+.ih-footerMeta,
+.ih-wpSlide p,
+.ih-wpSlide ul,
+.ih-wpList,
+.ih-wpSignal,
+.ih-wpMinorMeta,
+.ih-wpAllocMeta,
+.ih-wpPanelSub,
+.ih-wpLegal,
+.ih-heroNote,
+.ih-calcSubhead,
+.ih-calcKeyList li,
+.ih-protocolMetaValue,
+.ih-protocolList li {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.ih-logoText,
+.ih-footerLogo,
+.ih-navMobileHeaderText strong,
+.ih-h2,
+.ih-heroTitle,
+.ih-calcHeadline,
+.ih-calcPanelTitle,
+.ih-heroPanelTitle,
+.ih-kpiValue,
+.ih-calcStatValue,
+.ih-wpSummaryTitle,
+.ih-wpSummaryCard h4 {
+  background: var(--ih-metal-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.6),
+    0 8px 18px rgba(0, 0, 0, 0.5);
+}
+
+.ih-h2 {
+  text-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.6),
+    0 10px 22px rgba(0, 0, 0, 0.52),
+    0 0 18px rgba(255, 255, 255, 0.04);
+}
+
+.ih-heroStatement--heavy.ih-metalGradient {
+  background: var(--ih-gold-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+}
+
+.ih-navCapsule {
+  min-height: 82px;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.06), transparent 30%),
+    linear-gradient(180deg, rgba(19, 19, 21, 0.96), rgba(5, 5, 6, 0.98));
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 10px rgba(255, 255, 255, 0.03),
+    0 0 40px rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+}
+
+.ih-navCapsule::before,
+.ih-navCapsule::after {
+  display: none;
+}
+
+.ih-navCapsule:hover,
+.ih-navCapsule:focus-within,
+.ih-nav--solid .ih-navCapsule {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.07), transparent 30%),
+    linear-gradient(180deg, rgba(21, 21, 23, 0.98), rgba(5, 5, 6, 0.99));
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 1px 12px rgba(255, 255, 255, 0.035),
+    0 0 44px rgba(255, 255, 255, 0.04);
+}
+
+.ih-logo {
+  gap: 14px;
+  padding-right: 22px;
+}
+
+.ih-logo::after {
+  left: 112px;
+}
+
+.ih-logoMark {
+  position: relative;
+  width: 104px;
+  height: 104px;
+}
+
+.ih-logoMark::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(244, 207, 99, 0.22) 0%, rgba(244, 207, 99, 0.08) 42%, rgba(244, 207, 99, 0) 74%);
+  filter: blur(10px);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.ih-logoImage {
+  position: relative;
+  width: 104px;
+  height: 104px;
+  filter:
+    brightness(1.55)
+    contrast(1.22)
+    saturate(1.08)
+    drop-shadow(0 0 10px rgba(255, 219, 130, 0.28))
+    drop-shadow(0 0 22px rgba(216, 166, 43, 0.18));
+}
+
+.ih-logoText {
+  font-size: 26px;
+  letter-spacing: 0.11em;
+}
+
+.ih-navLinks a,
+.ih-footerLinks a {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.ih-navLinks a:hover,
+.ih-footerLinks a:hover,
+.ih-navMobileLinks a:hover {
+  color: rgb(244, 207, 99);
+  text-shadow: 0 0 8px rgba(255, 180, 77, 0.25);
+}
+
+.ih-btn--primary {
+  background: var(--ih-gold-text);
+  color: #14110a !important;
+  border-color: rgba(255, 200, 98, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 8px 18px rgba(0, 0, 0, 0.24);
+}
+
+.ih-btn--secondary {
+  background: linear-gradient(180deg, rgba(32, 32, 34, 0.9), rgba(10, 10, 11, 0.96));
+  color: rgba(255, 255, 255, 0.84) !important;
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.ih-hero,
+.ih-section,
+.ih-section--gunmetal,
+.ih-section--steel,
+.ih-section--black,
+.ih-footer {
+  background: transparent;
+}
+
+.ih-hero {
+  position: relative;
+  min-height: max(760px, 100svh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 120px;
+  padding-bottom: 88px;
+  overflow: hidden;
+}
+
+.ih-heroGrid {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.ih-heroLeft {
+  position: relative;
+  z-index: 4;
+  width: min(1120px, 94vw);
+  padding: 48px 0;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ih-hero .ih-eyebrow {
+  margin-bottom: 14px;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+}
+
+.ih-heroTitleBlock {
+  position: relative;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.ih-heroTitle {
+  margin: 0;
+  font-size: clamp(68px, 8vw, 116px);
+  line-height: 0.88;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.ih-slashAccent {
+  position: absolute;
+  width: 22px;
+  height: 6px;
+  top: 70%;
+  right: 12%;
+  background: linear-gradient(90deg, #ffb44d, #ff7a00);
+  transform: rotate(-50deg);
+  border-radius: 8px;
+  box-shadow: 0 0 18px rgba(255, 140, 0, 0.45);
+}
+
+.ih-heroStatement--thin {
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: clamp(30px, 3.2vw, 54px);
+  line-height: 0.95;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.95);
+  text-transform: uppercase;
+}
+
+.ih-heroStatement--heavy {
+  margin-top: 6px;
+  margin-bottom: 0;
+  max-width: none;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: clamp(40px, 4.2vw, 70px);
+  line-height: 0.95;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.ih-heroNote {
+  margin-top: 18px;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 17px;
+  line-height: 1.55;
+  padding: 0;
+  text-wrap: balance;
+}
+
+.ih-microline {
+  display: block !important;
+  width: min(220px, 32vw);
+  height: 1px;
+  margin: 20px auto 0;
+  background: linear-gradient(90deg, rgba(255, 180, 77, 0), rgba(255, 180, 77, 0.9), rgba(255, 180, 77, 0));
+  box-shadow: 0 0 12px rgba(255, 180, 77, 0.18);
+}
+
+.ih-heroCtas {
+  margin-top: 24px;
+  justify-content: center;
+  gap: 12px;
+}
+
+.ih-heroLogoGhost {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  transform: translateY(-82px);
+}
+
+.ih-heroLogoGhost img {
+  width: min(760px, 90vw);
+  opacity: 0.05;
+  mix-blend-mode: screen;
+  filter:
+    saturate(1.02)
+    contrast(1.08)
+    brightness(0.52)
+    drop-shadow(0 0 12px rgba(var(--gold-rgb), 0.06))
+    drop-shadow(0 0 22px rgba(0, 0, 0, 0.55));
+}
+
+.ih-section {
+  padding-top: 104px;
+  padding-bottom: 104px;
+}
+
+.ih-sectionTop,
+.ih-sectionBody {
+  position: relative;
+  z-index: 4;
+}
+
+.ih-sectionTop {
+  width: 100%;
+  margin: 0 0 32px;
+  display: grid;
+  justify-items: start;
+  text-align: left;
+  padding-left: 0;
+  padding-top: 0;
+  border-left: 0;
+  box-shadow: none;
+}
+
+.ih-sectionTop::before {
+  display: none;
+  content: none;
+}
+
+.ih-sectionBeam {
+  width: 120px;
+  height: 1px;
+  margin-bottom: 14px;
+  margin-left: 0;
+  background: linear-gradient(90deg, rgba(255, 180, 77, 0), rgba(255, 180, 77, 0.9), rgba(255, 180, 77, 0));
+  box-shadow: 0 0 12px rgba(255, 180, 77, 0.16);
+}
+
+.ih-h2 {
+  margin-top: 16px;
+  max-width: 12ch;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.ih-h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: clamp(120px, 42%, 220px);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(244, 207, 99, 0.9), rgba(216, 166, 43, 0.42), rgba(216, 166, 43, 0));
+  box-shadow: 0 0 10px rgba(216, 166, 43, 0.28);
+}
+
+.ih-sectionBody {
+  width: 100%;
+  margin: 0;
+}
+
+/* Keep all module root wrappers on the exact same rail width */
+.ih-sectionBody > .ih-calcWrap,
+.ih-sectionBody > .ih-calcSnapshotWrap,
+.ih-sectionBody > .ih-wpSummary,
+.ih-sectionBody > .ih-grid,
+.ih-sectionBody > .ih-dataPanel {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.ih-card,
+.ih-dataPanel,
+.ih-miniChart,
+.ih-kpi,
+.ih-chip,
+.ih-wpHero,
+.ih-wpCarouselShell,
+.ih-wpSlide,
+.ih-wpSummaryIntro,
+.ih-wpSummaryCard,
+.ih-wpSummaryNotice,
+.ih-wpPanel,
+.ih-wpStatCard,
+.ih-wpAllocRow,
+.ih-wpMinorCard,
+.ih-wpLogicCard,
+.ih-wpSignal,
+.ih-calcCopy,
+.ih-calcPanel,
+.ih-protocolSnapshot,
+.ih-calcStat,
+.ih-calcField input {
+  background: var(--ih-panel-bg);
+  border-color: var(--ih-panel-border) !important;
+  box-shadow: var(--ih-panel-shadow);
+  backdrop-filter: blur(8px);
+}
+
+.ih-card:hover,
+.ih-wpMinorCard:hover,
+.ih-wpLogicCard:hover,
+.ih-calcStat:hover {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    inset 0 1px 10px rgba(255, 255, 255, 0.04),
+    0 0 44px rgba(255, 255, 255, 0.035);
+}
+
+.ih-grid {
+  width: min(var(--ih-content-rail), 100%);
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.ih-card {
+  min-height: 100%;
+  padding: 28px;
+  border-radius: 22px;
+}
+
+.ih-cardHead {
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ih-cardMetric,
+.ih-cardTag {
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.ih-cardIcon {
+  width: 64px;
+  height: 64px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.01);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
+}
+
+.ih-cardTitle {
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.ih-cardDesc {
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.ih-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.ih-icon path {
+  stroke: rgba(255, 255, 255, 0.9);
+}
+
+.ih-calcHeadline,
+.ih-wpSummaryTitle {
+  font-size: clamp(34px, 4vw, 54px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.ih-calcWrap {
+  width: min(var(--ih-content-rail), 100%);
+  margin: 0 auto;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.ih-calcCopy,
+.ih-calcPanel,
+.ih-protocolSnapshot,
+.ih-dataPanel,
+.ih-wpSummaryIntro,
+.ih-wpSummaryNotice,
+.ih-wpSummaryCard {
+  border-radius: 24px;
+}
+
+.ih-calcCopy,
+.ih-calcPanel,
+.ih-protocolSnapshot {
+  padding: 30px;
+}
+
+.ih-calcCopy {
+  text-align: left;
+}
+
+.ih-calcSubhead,
+.ih-wpLead {
+  max-width: 46ch;
+  width: auto;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.ih-calcMetaTitle,
+.ih-calcHeadline,
+.ih-calcSubhead {
+  text-align: left;
+}
+
+.ih-calcPills span,
+.ih-wpBadge,
+.ih-chip {
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.ih-calcPills {
+  gap: 10px;
+}
+
+.ih-calcPills span {
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+
+.ih-calcKeyList {
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
+  padding-left: 18px;
+}
+
+.ih-calcPanelHeader {
+  margin-bottom: 18px;
+}
+
+.ih-calcField input,
+.ih-calcStat,
+.ih-protocolMetaItem,
+.ih-kpi {
+  border-radius: 18px;
+}
+
+.ih-calcField input {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.ih-protocolSnapshot {
+  margin-top: 20px;
+}
+
+.ih-calcSnapshotWrap {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.ih-calcSnapshotWrap .ih-protocolSnapshot,
+.ih-protocolSnapshot.ih-heroPanel {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.ih-protocolList {
+  display: grid;
+  gap: 10px;
+  padding-left: 18px;
+}
+
+.ih-protocolMeta {
+  margin-top: 20px;
+  gap: 12px;
+}
+
+.ih-protocolMetaItem {
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ih-dataHeader,
+.ih-dataFooter,
+.ih-miniLabels,
+.ih-wpSummaryGrid {
+  position: relative;
+  z-index: 1;
+}
+
+.ih-dataPanel {
+  width: min(var(--ih-content-rail), 100%);
+  margin: 0 auto;
+  padding: 30px;
+}
+
+.ih-dataHeader {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.ih-chip {
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+
+.ih-miniChart {
+  margin-top: 18px;
+}
+
+.ih-dataFooter {
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.ih-kpi {
+  text-align: left;
+  padding: 18px;
+}
+
+.ih-wpSummary {
+  width: min(var(--ih-content-rail), 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+}
+
+.ih-wpSummaryIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.85fr);
+  gap: 14px;
+  padding: 30px 32px;
+  text-align: left;
+}
+
+.ih-wpBadge,
+.ih-wpSummaryTitle {
+  grid-column: 1;
+}
+
+.ih-wpBadge {
+  display: inline-flex;
+  width: fit-content;
+  justify-self: start;
+  align-self: start;
+  padding-right: 14px;
+}
+
+.ih-wpLead {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: end;
+  margin: 0;
+  max-width: none;
+}
+
+.ih-wpSummaryGrid {
+  gap: 20px;
+}
+
+.ih-wpSummaryCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 26px;
+  min-height: 100%;
+}
+
+.ih-wpSummaryCard ul {
+  display: grid;
+  gap: 10px;
+  padding-left: 18px;
+}
+
+.ih-wpSummaryNotice {
+  padding: 24px 28px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.ih-wpSummaryTitle,
+.ih-calcHeadline,
+.ih-heroPanelTitle {
+  max-width: none;
+}
+
+#foundation .ih-sectionBody {
+  width: min(var(--ih-content-rail), 100%);
+  text-align: left;
+}
+
+#whitepaper .ih-sectionTop,
+#whitepaper .ih-sectionBody {
+  max-width: none;
+  width: min(var(--ih-content-rail), 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#foundation .ih-sectionTop {
+  max-width: min(var(--ih-content-rail), 100%);
+  margin-bottom: 28px;
+}
+
+#foundation .ih-h2 {
+  max-width: none;
+}
+
+#data .ih-h2 {
+  max-width: 24ch;
+  text-wrap: balance;
+  line-height: 0.94;
+}
+
+.ih-foundationScramble,
+.ih-foundationScramble .ih-scrambleLive {
+  display: inline-block;
+  background: var(--ih-metal-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.6),
+    0 8px 18px rgba(0, 0, 0, 0.5),
+    0 0 18px rgba(255, 255, 255, 0.04);
+}
+
+.ih-foundationScramble .ih-scrambleSizer {
+  background: var(--ih-metal-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+#foundation .ih-scramble {
+  display: block;
+  width: auto;
+  max-width: none;
+  white-space: nowrap;
+  font-size: clamp(22px, 2.4vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  overflow: visible;
+}
+
+#foundation .ih-scramble.is-done::after {
+  height: 1.5px;
+  background: linear-gradient(90deg, rgba(244, 207, 99, 0.95), rgba(216, 166, 43, 0.52), rgba(216, 166, 43, 0));
+  box-shadow: 0 0 12px rgba(216, 166, 43, 0.32);
+}
+
+#foundation .ih-body {
+  max-width: 52ch;
+  padding: 14px 0 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 16px;
+  line-height: 1.65;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.26);
+}
+
+.ih-footer {
+  padding-top: 14px;
+  padding-bottom: 40px;
+  background: transparent;
+}
+
+.ih-footerTopLine {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(216, 166, 43, 0), rgba(216, 166, 43, 0.42), rgba(216, 166, 43, 0));
+}
+
+.ih-footerInner {
+  width: min(var(--ih-content-rail), 100%);
+  margin: 0 auto;
+  padding: 18px 0 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  align-items: center;
+  text-align: center;
+}
+
+.ih-footerBrand {
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.ih-footerLogoMark,
+.ih-footerLogoImage {
+  width: 124px;
+  height: 124px;
+}
+
+.ih-footerLogoMark {
+  position: relative;
+}
+
+.ih-footerLogoMark::before {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(244, 207, 99, 0.24) 0%, rgba(244, 207, 99, 0.1) 42%, rgba(244, 207, 99, 0) 76%);
+  filter: blur(16px);
+  opacity: 0.95;
+  pointer-events: none;
+}
+
+.ih-footerLogoImage {
+  position: relative;
+  filter:
+    brightness(1.56)
+    contrast(1.2)
+    saturate(1.08)
+    drop-shadow(0 0 12px rgba(255, 219, 130, 0.24))
+    drop-shadow(0 0 28px rgba(216, 166, 43, 0.2));
+}
+
+.ih-footerLogo {
+  font-size: 27px;
+  letter-spacing: 0.1em;
+}
+
+.ih-footerLinks {
+  gap: 12px;
+  justify-content: center;
+}
+
+.ih-navMobile,
+.ih-navBackdrop {
+  backdrop-filter: blur(12px);
+}
+
+.ih-browser-chrome .ih-bgOverlay::after {
+  opacity: 0.08;
+  mix-blend-mode: screen;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.8) 0.6px, transparent 0.7px);
+  background-size: 4px 4px;
+}
+
+@media (max-width: 1023px) {
+  .ih-heroStatement--heavy {
+    font-size: clamp(34px, 4.8vw, 52px);
+  }
+
+  .ih-calcWrap {
+    gap: 18px;
+  }
+
+  .ih-wpSummaryIntro {
+    grid-template-columns: 1fr;
+  }
+
+  .ih-wpLead {
+    grid-column: auto;
+    grid-row: auto;
+    max-width: none;
+  }
+
+  #foundation .ih-scramble {
+    white-space: normal;
+    font-size: clamp(26px, 3.4vw, 40px);
+  }
+
+  .ih-wpSummaryNotice {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 767px) {
+  .ih-app :is(
+    .ih-h2,
+    .ih-calcHeadline,
+    .ih-calcPanelTitle,
+    .ih-heroPanelTitle,
+    .ih-kpiValue,
+    .ih-calcStatValue,
+    .ih-wpSummaryTitle,
+    .ih-wpSummaryCard h4,
+    .ih-foundationScramble,
+    .ih-foundationScramble .ih-scrambleLive,
+    .ih-foundationScramble .ih-scrambleSizer,
+    #foundation .ih-scramble
+  ) {
+    display: inline-block;
+    background: var(--ih-metal-text);
+    background-size: 100% 100%;
+    background-position: 50% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 0;
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.2),
+      0 2px 6px rgba(0, 0, 0, 0.58);
+  }
+
+  .ih-hero {
+    padding-top: 132px;
+    padding-bottom: 84px;
+  }
+
+  .ih-logo {
+    gap: 10px;
+    padding-right: 12px;
+  }
+
+  .ih-logo::after {
+    left: 88px;
+  }
+
+  .ih-logoMark,
+  .ih-logoImage {
+    width: 84px;
+    height: 84px;
+  }
+
+  .ih-logoText {
+    font-size: 22px;
+    letter-spacing: 0.1em;
+  }
+
+  .ih-heroLeft {
+    width: min(100%, 520px);
+    padding: 44px 18px 78px;
+  }
+
+  .ih-hero .ih-eyebrow {
+    margin-bottom: 12px;
+    font-size: 9px;
+    letter-spacing: 0.26em;
+    text-align: center;
+  }
+
+  .ih-heroTitleBlock {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .ih-heroTitle {
+    display: inline-block;
+    font-size: clamp(58px, 15vw, 84px);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+
+  .ih-heroStatement {
+    text-wrap: balance;
+  }
+
+  .ih-heroStatement--thin {
+    margin-top: 8px;
+    font-size: clamp(24px, 7.4vw, 38px);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+  }
+
+  .ih-heroStatement--heavy {
+    margin-top: 6px;
+    max-width: 12ch;
+    font-size: clamp(31px, 8.8vw, 44px);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .ih-app .ih-heroStatement--heavy.ih-metalGradient {
+    display: block;
+    background: none;
+    background-image: var(--ih-gold-text) !important;
+    background-size: 100% 100%;
+    background-position: 50% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: none;
+  }
+
+  .ih-slashAccent {
+    width: 18px;
+    height: 5px;
+    top: 73%;
+    right: 2%;
+  }
+
+  .ih-microline {
+    width: min(176px, 46vw);
+    margin-top: 18px;
+  }
+
+  .ih-heroNote {
+    max-width: 30ch;
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 1.55;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .ih-heroLogoGhost {
+    transform: translateY(-46px);
+  }
+
+  .ih-heroLogoGhost img {
+    width: min(520px, 112vw);
+    opacity: 0.055;
+  }
+
+  .ih-heroCtas {
+    gap: 10px;
+  }
+
+  .ih-heroCtas .ih-btn {
+    min-width: 124px;
+  }
+
+  .ih-section {
+    padding-top: 90px;
+    padding-bottom: 90px;
+  }
+
+  .ih-sectionTop {
+    margin-bottom: 28px;
+    justify-items: start;
+    text-align: left;
+  }
+
+  .ih-sectionBeam {
+    width: 88px;
+    margin-left: 0;
+  }
+
+  .ih-card,
+  .ih-calcCopy,
+  .ih-calcPanel,
+  .ih-protocolSnapshot,
+  .ih-dataPanel,
+  .ih-wpSummaryIntro,
+  .ih-wpSummaryCard,
+  .ih-wpSummaryNotice {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .ih-dataPanel {
+    padding: 20px;
+  }
+
+  .ih-footerInner {
+    padding: 16px 0 6px;
+    border-radius: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .ih-footerLogoMark,
+  .ih-footerLogoImage {
+    width: 98px;
+    height: 98px;
+  }
+
+  .ih-footerLogo {
+    font-size: 23px;
+  }
+}

@@ -10,7 +10,7 @@ import WhitepaperIntelligence from "./components/WhitepaperIntelligence";
 import ScrambleText from "./components/ScrambleText";
 import Footer from "./components/Footer";
 import LoadingScreen from "./components/LoadingScreen";
-import AmbientHighlights from "./components/AmbientHighlights";
+import ForgeScene from "./components/ForgeScene";
 import { popIn, riseSoft, stagger, viewport } from "./lib/motion";
 
 const LOADER_DURATION_MS = 4000;
@@ -52,7 +52,9 @@ export default function App() {
 
       {showApp ? (
         <div className="ih-app">
-          <AmbientHighlights />
+          <ForgeScene />
+          <div className="ih-bgNoise" aria-hidden="true" />
+          <div className="ih-bgOverlay" aria-hidden="true" />
           <Navbar />
           <main>
             <Hero />
@@ -73,7 +75,7 @@ export default function App() {
               id="whitepaper"
               tone="steel"
               eyebrow="WHITEPAPER"
-              title="Whitepaper Summary."
+              title="Whitepaper"
             >
               <WhitepaperIntelligence />
             </Section>
@@ -82,7 +84,7 @@ export default function App() {
               id="foundation"
               tone="gunmetal"
               eyebrow="FOUNDATION"
-              title={<ScrambleText text="Infrastructure-grade presence." />}
+              title={<ScrambleText text="Infrastructure-grade presence." className="ih-foundationScramble" />}
             >
               <p className="ih-body">
                 Ironhold is designed to feel like a private capital interface - calm, engineered, and permanent.
