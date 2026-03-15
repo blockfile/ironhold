@@ -71,9 +71,7 @@ export default function Hero() {
         <motion.div className="ih-heroLeft" variants={stagger} initial="hidden" animate="show">
           <motion.div className="ih-eyebrow" variants={riseSoft}>PRIVATE PROTOCOL INFRASTRUCTURE</motion.div>
           <motion.div className="ih-heroTitleBlock" variants={riseSoft}>
-            <h1 className="ih-heroTitle ih-metalGradient ih-metalShine" data-text="IRONHOLD">
-              IRONHOLD
-            </h1>
+            <h1 className="ih-heroTitle ih-metalGradient ih-metalShine" data-text="IRONHOLD">IRONHOLD</h1>
             <span className="ih-slashAccent" aria-hidden="true" />
           </motion.div>
           <motion.p className="ih-heroStatement ih-heroStatement--thin" variants={riseSoft}>Built to Hold.</motion.p>

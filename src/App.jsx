@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import LoadingScreen from "./components/LoadingScreen";
 import ForgeScene from "./components/ForgeScene";
 import { popIn, riseSoft, stagger, viewport } from "./lib/motion";
+import coinImage from "./components/assets/images/coin.png";
 
 const LOADER_DURATION_MS = 4000;
 const LOADER_EXIT_MS = 420;
@@ -63,6 +64,7 @@ export default function App() {
               id="calculator"
               tone="gunmetal"
               eyebrow="CALCULATOR"
+              titleClassName="ih-goldTextStrong"
               title="Mechanics-first projection model."
             >
               <GrowthCalculator />
@@ -75,6 +77,7 @@ export default function App() {
               id="whitepaper"
               tone="steel"
               eyebrow="WHITEPAPER"
+              titleClassName="ih-goldTextStrong"
               title="Whitepaper"
             >
               <WhitepaperIntelligence />
@@ -84,19 +87,43 @@ export default function App() {
               id="foundation"
               tone="gunmetal"
               eyebrow="FOUNDATION"
-              title={<ScrambleText text="Infrastructure-grade presence." className="ih-foundationScramble" />}
+              title={
+                <ScrambleText
+                  text="Infrastructure-grade presence."
+                  className="ih-foundationScramble ih-foundationScramble--gold"
+                />
+              }
             >
-              <p className="ih-body">
-                Ironhold is designed to feel like a private capital interface - calm, engineered, and permanent.
-                No hype. No noise. Just structure.
-              </p>
+              <div className="ih-foundationCopy">
+                <p className="ih-body">
+                  Ironhold is designed to feel like a private capital interface - calm, engineered, and permanent. No
+                  hype. No noise. Just structure.
+                </p>
+                <p className="ih-body ih-foundationBodySecondary">
+                  Every surface is meant to feel deliberate: restrained motion, vault-like spacing, and a visual tone
+                  that suggests durability over spectacle.
+                </p>
+              </div>
+              <img className="ih-foundationCoin" src={coinImage} alt="" aria-hidden="true" />
             </Section>
 
-            <Section id="capabilities" tone="steel" eyebrow="CAPABILITIES" title="Built like a vault UI.">
+            <Section
+              id="capabilities"
+              tone="steel"
+              eyebrow="CAPABILITIES"
+              titleClassName="ih-goldTextStrong"
+              title="Built like a vault UI."
+            >
               <FeatureGrid />
             </Section>
 
-            <Section id="data" tone="gunmetal" eyebrow="DATA" title="Minimal. Terminal-like. Controlled.">
+            <Section
+              id="data"
+              tone="gunmetal"
+              eyebrow="DATA"
+              titleClassName="ih-goldTextStrong"
+              title="Minimal. Terminal-like. Controlled."
+            >
               <motion.div
                 className="ih-dataPanel"
                 variants={stagger}

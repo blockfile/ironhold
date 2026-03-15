@@ -73,7 +73,7 @@ export default function GrowthCalculator() {
         <motion.div className="ih-calcMetaTitle" variants={riseSoft}>
           Ironhold Growth Projection Calculator
         </motion.div>
-        <motion.h3 className="ih-calcHeadline" variants={riseSoft}>
+        <motion.h3 className="ih-calcHeadline ih-goldTextStrong" variants={riseSoft}>
           Model Your $IHOLD Balance
         </motion.h3>
         <motion.p className="ih-calcSubhead" variants={riseSoft}>
@@ -96,7 +96,7 @@ export default function GrowthCalculator() {
       <motion.aside className="ih-calcPanel" aria-label="Ironhold growth projection calculator" variants={popIn}>
         <div className="ih-calcPanelHeader">
           <div>
-            <div className="ih-calcPanelTitle">Projection Inputs</div>
+            <div className="ih-calcPanelTitle ih-goldTextStrong">Projection Inputs</div>
             <div className="ih-calcPanelRate">APY Assumption: 10,000%</div>
           </div>
         </div>

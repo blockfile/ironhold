@@ -34,19 +34,19 @@ export default function WhitepaperIntelligence() {
     <motion.div className="ih-wpSummary" variants={stagger} initial="hidden" whileInView="show" viewport={viewport}>
       <motion.div className="ih-wpSummaryIntro" variants={popIn}>
         <motion.div className="ih-wpBadge" variants={riseSoft}>Whitepaper</motion.div>
-        <motion.h3 className="ih-wpSummaryTitle" variants={riseSoft}>
+        <motion.h3 className="ih-wpSummaryTitle ih-goldTextStrong" variants={riseSoft}>
           Protocol mechanics
         </motion.h3>
         <motion.p className="ih-wpLead" variants={riseSoft}>
-          Ironhold is built around fixed-supply structure, proportional distribution, and liquidity-first design.
-          This section keeps only the core points needed for fast evaluation.
+          Ironhold is built around fixed-supply structure, proportional distribution, and liquidity-first design. This
+          section keeps only the core points needed for fast evaluation.
         </motion.p>
       </motion.div>
 
       <motion.div className="ih-wpSummaryGrid" variants={stagger}>
         {summaryCards.map((card) => (
           <motion.article className="ih-wpSummaryCard" key={card.title} variants={popIn}>
-            <h4>{card.title}</h4>
+            <h4 className="ih-goldTextStrong">{card.title}</h4>
             <ul>
               {card.points.map((point) => (
                 <li key={point}>{point}</li>
@@ -58,8 +58,8 @@ export default function WhitepaperIntelligence() {
 
       <motion.div className="ih-wpSummaryNotice" variants={popIn}>
         <p>
-          This summary is informational and mechanics-focused. It does not represent guaranteed USD outcomes and is
-          not financial advice.
+          This summary is informational and mechanics-focused. It does not represent guaranteed USD outcomes and is not
+          financial advice.
         </p>
         <button className="ih-btn ih-btn--secondary" type="button">Read Full Whitepaper</button>
       </motion.div>

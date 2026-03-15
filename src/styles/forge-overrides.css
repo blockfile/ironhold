@@ -493,14 +493,14 @@ body {
 
 .ih-heroLogoGhost img {
   width: min(760px, 90vw);
-  opacity: 0.05;
+  opacity: 0.18;
   mix-blend-mode: screen;
   filter:
-    saturate(1.02)
-    contrast(1.08)
-    brightness(0.52)
-    drop-shadow(0 0 12px rgba(var(--gold-rgb), 0.06))
-    drop-shadow(0 0 22px rgba(0, 0, 0, 0.55));
+    saturate(1.12)
+    contrast(1.2)
+    brightness(0.84)
+    drop-shadow(0 0 24px rgba(var(--gold-rgb), 0.2))
+    drop-shadow(0 0 40px rgba(0, 0, 0, 0.5));
 }
 
 .ih-section {
@@ -895,7 +895,38 @@ body {
 
 #foundation .ih-sectionBody {
   width: min(var(--ih-content-rail), 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
+  gap: clamp(28px, 5vw, 84px);
+  align-items: center;
   text-align: left;
+}
+
+.ih-foundationCopy {
+  max-width: 54ch;
+  display: grid;
+  gap: 14px;
+  align-self: center;
+}
+
+.ih-foundationCoin {
+  justify-self: end;
+  align-self: center;
+  display: block;
+  width: min(100%, 260px);
+  max-width: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+  opacity: 0.98;
+  filter:
+    saturate(1.12)
+    brightness(1.12)
+    contrast(1.08)
+    drop-shadow(0 0 16px rgba(255, 214, 124, 0.38))
+    drop-shadow(0 0 28px rgba(216, 166, 43, 0.34))
+    drop-shadow(0 20px 28px rgba(0, 0, 0, 0.36));
+  transform: translateY(-18px) rotate(-10deg);
+  animation: ihFoundationCoinFloat 7s ease-in-out infinite;
 }
 
 #whitepaper .ih-sectionTop,
@@ -962,12 +993,29 @@ body {
 }
 
 #foundation .ih-body {
-  max-width: 52ch;
-  padding: 14px 0 0 0;
+  max-width: none;
+  padding: 0;
   color: rgba(255, 255, 255, 0.82);
   font-size: 16px;
   line-height: 1.65;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.26);
+}
+
+.ih-foundationBodySecondary {
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+@keyframes ihFoundationCoinFloat {
+  0%,
+  100% {
+    transform: translateY(-18px) rotate(-10deg) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translateY(-18px) rotate(-6deg) translate3d(-6px, -10px, 0);
+  }
 }
 
 .ih-footer {
@@ -1057,6 +1105,16 @@ body {
 }
 
 @media (max-width: 1023px) {
+  #foundation .ih-sectionBody {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .ih-foundationCopy {
+    max-width: 56ch;
+  }
+
   .ih-heroStatement--heavy {
     font-size: clamp(34px, 4.8vw, 52px);
   }
@@ -1087,6 +1145,11 @@ body {
 }
 
 @media (max-width: 767px) {
+  .ih-foundationCoin {
+    justify-self: center;
+    width: min(172px, 52vw);
+  }
+
   .ih-app :is(
     .ih-h2,
     .ih-calcHeadline,
@@ -1113,6 +1176,28 @@ body {
     text-shadow:
       0 1px 0 rgba(255, 255, 255, 0.2),
       0 2px 6px rgba(0, 0, 0, 0.58);
+  }
+
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .ih-app .ih-goldTextStrong,
+    .ih-app .ih-sectionTitleText.ih-goldTextStrong,
+    .ih-app .ih-cardTitle > .ih-goldTextStrong,
+    .ih-app .ih-foundationScramble--gold,
+    .ih-app .ih-foundationScramble--gold .ih-scrambleLive,
+    .ih-app .ih-foundationScramble--gold .ih-scrambleSizer {
+      display: inline-block;
+      width: fit-content;
+      max-width: 100%;
+      background-image: linear-gradient(180deg, #f9df8f 0%, #f4cf63 24%, #d79d20 58%, #8e5a0f 100%);
+      background-size: 100% 100%;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      color: transparent !important;
+      -webkit-text-fill-color: transparent !important;
+      -webkit-text-stroke: 0;
+    }
   }
 
   .ih-hero {
@@ -1226,7 +1311,7 @@ body {
 
   .ih-heroLogoGhost img {
     width: min(520px, 112vw);
-    opacity: 0.055;
+    opacity: 0.11;
   }
 
   .ih-heroCtas {
@@ -1284,5 +1369,61 @@ body {
 
   .ih-footerLogo {
     font-size: 23px;
+  }
+}
+
+.ih-goldTextSoft,
+.ih-app .ih-goldTextSoft {
+  color: rgba(244, 207, 99, 0.9);
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.48),
+    0 0 16px rgba(255, 180, 77, 0.12);
+}
+
+.ih-goldTextStrong,
+.ih-app .ih-goldTextStrong {
+  display: inline-block;
+  width: fit-content;
+  max-width: 100%;
+  color: rgb(244, 207, 99);
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.44),
+    0 0 14px rgba(255, 180, 77, 0.16),
+    0 0 28px rgba(216, 166, 43, 0.08);
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .ih-goldTextStrong,
+  .ih-app .ih-goldTextStrong {
+    background: linear-gradient(180deg, #f9df8f 0%, #f4cf63 24%, #d79d20 58%, #8e5a0f 100%);
+    background-size: 100% 100%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .ih-sectionTitleText.ih-goldTextStrong,
+  .ih-app .ih-sectionTitleText.ih-goldTextStrong,
+  .ih-cardTitle > .ih-goldTextStrong,
+  .ih-app .ih-cardTitle > .ih-goldTextStrong {
+    display: inline-block;
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .ih-foundationScramble--gold,
+  .ih-foundationScramble--gold .ih-scrambleLive,
+  .ih-foundationScramble--gold .ih-scrambleSizer {
+    background: linear-gradient(180deg, #f9df8f 0%, #f4cf63 24%, #d79d20 58%, #8e5a0f 100%);
+    background-size: 100% 100%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
   }
 }

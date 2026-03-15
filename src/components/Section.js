@@ -2,7 +2,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import { rise, riseSoft, viewport } from "../lib/motion";
 
-export default function Section({ id, tone = "black", eyebrow, title, children }) {
+export default function Section({ id, tone = "black", eyebrow, title, titleClassName = "", children }) {
+  const renderedTitle = typeof title === "string" && titleClassName
+    ? <span className={`ih-sectionTitleText ${titleClassName}`.trim()}>{title}</span>
+    : title;
+
   return (
     <motion.section
       id={id}
@@ -16,7 +20,7 @@ export default function Section({ id, tone = "black", eyebrow, title, children }
         <motion.div className="ih-sectionTop" variants={riseSoft}>
           <div className="ih-sectionBeam" aria-hidden="true" />
           <div className="ih-eyebrow">{eyebrow}</div>
-          <h2 className="ih-h2">{title}</h2>
+          <h2 className="ih-h2">{renderedTitle}</h2>
         </motion.div>
         <motion.div className="ih-sectionBody" variants={riseSoft}>
           {children}

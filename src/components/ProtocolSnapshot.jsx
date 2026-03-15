@@ -11,7 +11,7 @@ export default function ProtocolSnapshot() {
       whileInView="show"
       viewport={viewport}
     >
-      <div className="ih-heroPanelTitle">Protocol Snapshot</div>
+      <div className="ih-heroPanelTitle ih-goldTextStrong">Protocol Snapshot</div>
 
       <ul className="ih-heroPanelList ih-protocolList">
         <li>1,000,000,000 fixed total supply</li>

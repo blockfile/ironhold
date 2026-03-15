@@ -77,7 +77,9 @@ export default function FeatureGrid() {
               </svg>
             </div>
 
-            <div className="ih-cardTitle">{f.title}</div>
+            <div className="ih-cardTitle">
+              <span className="ih-goldTextStrong">{f.title}</span>
+            </div>
             <div className="ih-cardDesc">{f.desc}</div>
             <div className="ih-cardLine" />
           </motion.div>
