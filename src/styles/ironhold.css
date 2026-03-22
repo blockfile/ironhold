@@ -2394,14 +2394,95 @@ a {
   font-size: 24px;
 }
 
-.ih-footerLinks {
+.ih-footerSocial {
+  width: min(100%, 760px);
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.ih-footerSocialLink {
+  flex: 1 1 176px;
+  max-width: 220px;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 11px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    rgba(10, 14, 20, 0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 24px rgba(0, 0, 0, 0.18);
+  color: rgba(232, 236, 240, 0.9);
+  transition:
+    transform 0.35s var(--ease-slow),
+    border-color 0.35s var(--ease-slow),
+    box-shadow 0.35s var(--ease-slow),
+    color 0.35s var(--ease-slow);
+}
+
+.ih-footerSocialLink:hover {
+  color: var(--accent-gold);
+  border-color: rgba(var(--gold-rgb), 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 12px 28px rgba(0, 0, 0, 0.24),
+    0 0 0 1px rgba(var(--gold-rgb), 0.08);
+  transform: translateY(-1px);
+}
+
+.ih-footerSocialLink:focus-visible {
+  outline: 1px solid rgba(var(--gold-rgb), 0.7);
+  outline-offset: 3px;
+}
+
+.ih-footerSocialIcon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ih-footerSocialIcon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: currentColor;
+}
+
+.ih-footerSocialText {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.ih-footerSocialLabel {
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 11px;
-  color: rgba(var(--steel-rgb), 0.72);
+  letter-spacing: 0.12em;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.ih-footerSocialHandle {
+  color: rgba(222, 227, 232, 0.74);
+  font-size: 12px;
+  line-height: 1.2;
+  transition: color 0.35s var(--ease-slow);
+}
+
+.ih-footerSocialLink:hover .ih-footerSocialHandle {
+  color: rgba(255, 245, 214, 0.88);
 }
 
 .ih-footerMeta {
@@ -3191,6 +3272,15 @@ a {
   .ih-footerLogoImage {
     width: 112px;
     height: 112px;
+  }
+
+  .ih-footerSocial {
+    width: 100%;
+  }
+
+  .ih-footerSocialLink {
+    flex-basis: min(100%, 320px);
+    max-width: 320px;
   }
 }
 

@@ -61,7 +61,14 @@ export default function WhitepaperIntelligence() {
           This summary is informational and mechanics-focused. It does not represent guaranteed USD outcomes and is not
           financial advice.
         </p>
-        <button className="ih-btn ih-btn--secondary" type="button">Read Full Whitepaper</button>
+        <a
+          className="ih-btn ih-btn--secondary"
+          href="/assets/pdf/ironhold.pdf"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Read Full Whitepaper
+        </a>
       </motion.div>
     </motion.div>
   );

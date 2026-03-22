@@ -86,7 +86,14 @@ export default function Hero() {
 
           <motion.div className="ih-heroCtas" variants={riseSoft}>
             <button className="ih-btn ih-btn--primary">Buy $IHOLD</button>
-            <button className="ih-btn ih-btn--secondary">Read Whitepaper</button>
+            <a
+              className="ih-btn ih-btn--secondary"
+              href="/assets/pdf/ironhold.pdf"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Read Whitepaper
+            </a>
           </motion.div>
         </motion.div>
       </div>

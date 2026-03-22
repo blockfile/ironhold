@@ -109,7 +109,10 @@ export default function Navbar() {
                     <div className="ih-navCapsule">
                         <a className="ih-logo" href="#top" aria-label="Ironhold Home">
                             <span className="ih-logoMark">
-                                <img className="ih-logoImage" src="/logo2.png" alt="Ironhold logo" width="92" height="92" />
+                                <picture>
+                                    <source media="(max-width: 767px)" srcSet="/logo-mark.png" />
+                                    <img className="ih-logoImage" src="/logo2.png" alt="Ironhold logo" width="92" height="92" />
+                                </picture>
                             </span>
                             <span className="ih-logoText">IRONHOLD</span>
                         </a>
@@ -122,7 +125,7 @@ export default function Navbar() {
                             </nav>
 
                             <div className="ih-navDesktopActions">
-                                <button className="ih-btn ih-btn--secondary" type="button">Documentation</button>
+
                                 <button className="ih-btn ih-btn--primary" type="button">Buy</button>
                             </div>
                         </div>
@@ -154,7 +157,7 @@ export default function Navbar() {
                 <div className="ih-navMobileHeader">
                     <div className="ih-navMobileHeaderBrand">
                         <span className="ih-navMobileLogoMark" aria-hidden="true">
-                            <img className="ih-navMobileLogo" src="/logo2.png" alt="" />
+                            <img className="ih-navMobileLogo" src="/logo-mark.png" alt="" />
                         </span>
                         <div className="ih-navMobileHeaderText">
                             <strong>IRONHOLD</strong>
@@ -171,7 +174,7 @@ export default function Navbar() {
                     ))}
                 </nav>
                 <div className="ih-navMobileActions">
-                    <button className="ih-btn ih-btn--secondary" type="button">Documentation</button>
+
                     <button className="ih-btn ih-btn--primary" type="button">Buy</button>
                 </div>
             </div>

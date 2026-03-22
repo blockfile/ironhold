@@ -1084,9 +1084,26 @@ body {
   letter-spacing: 0.1em;
 }
 
-.ih-footerLinks {
-  gap: 12px;
-  justify-content: center;
+.ih-footerSocialLink {
+  border-color: rgba(255, 216, 145, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 239, 205, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(15, 12, 7, 0.44);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 244, 221, 0.08),
+    0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.ih-footerSocialLink:hover {
+  border-color: rgba(244, 207, 99, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 244, 221, 0.1),
+    0 14px 32px rgba(0, 0, 0, 0.22),
+    0 0 20px rgba(216, 166, 43, 0.08);
+}
+
+.ih-footerSocialHandle {
+  color: rgba(255, 244, 221, 0.68);
 }
 
 .ih-navMobile,
@@ -1211,18 +1228,20 @@ body {
   }
 
   .ih-logo::after {
-    left: 88px;
+    left: 82px;
   }
 
   .ih-logoMark,
   .ih-logoImage {
-    width: 84px;
-    height: 84px;
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    transform: none;
   }
 
   .ih-logoText {
-    font-size: 22px;
-    letter-spacing: 0.1em;
+    font-size: 20px;
+    letter-spacing: 0.08em;
   }
 
   .ih-heroLeft {
@@ -1363,12 +1382,14 @@ body {
 
   .ih-footerLogoMark,
   .ih-footerLogoImage {
-    width: 98px;
-    height: 98px;
+    width: 112px;
+    height: 112px;
+    object-fit: contain;
+    transform: none;
   }
 
   .ih-footerLogo {
-    font-size: 23px;
+    font-size: 21px;
   }
 }
 
