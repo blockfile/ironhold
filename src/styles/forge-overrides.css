@@ -1049,8 +1049,8 @@ body {
 
 .ih-footerLogoMark,
 .ih-footerLogoImage {
-  width: 124px;
-  height: 124px;
+  width: 146px;
+  height: 146px;
 }
 
 .ih-footerLogoMark {
@@ -1080,7 +1080,7 @@ body {
 }
 
 .ih-footerLogo {
-  font-size: 27px;
+  font-size: 31px;
   letter-spacing: 0.1em;
 }
 
@@ -1382,8 +1382,8 @@ body {
 
   .ih-footerLogoMark,
   .ih-footerLogoImage {
-    width: 112px;
-    height: 112px;
+    width: 126px;
+    height: 126px;
     object-fit: contain;
     transform: none;
   }
