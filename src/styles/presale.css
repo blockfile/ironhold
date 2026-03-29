@@ -1,0 +1,687 @@
+/* ═══════════════════════════════════════════════
+   Ironhold — Presale Page Styles
+   ═══════════════════════════════════════════════ */
+
+/* ── Page wrapper ── */
+.ih-presale {
+  min-height: 100vh;
+  background: #060709;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════════
+   Lava / fire particle system (CSS-only, fixed)
+══════════════════════════════════════════════ */
+
+/* Outer container — anchored to bottom of viewport */
+.ih-pf {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* ── Lava base glow — warm radial bloom along the floor ── */
+.ih-pfBase {
+  position: absolute;
+  bottom: -10px;
+  left: -8%;
+  right: -8%;
+  height: 90px;
+  background:
+    radial-gradient(ellipse 60% 100% at 25% 100%, rgba(195, 65,  8,  0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 90%  at 75% 100%, rgba(175, 50,  5,  0.18) 0%, transparent 55%),
+    linear-gradient(0deg, rgba(140, 45, 4, 0.14) 0%, transparent 100%);
+  filter: blur(14px);
+  animation: ih-pfBasePulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes ih-pfBasePulse {
+  from { opacity: 0.6; }
+  to   { opacity: 1;   }
+}
+
+/* ── Lava crack — thin glowing seam at the very bottom ── */
+.ih-pfLavaCrack {
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(220, 85, 10, 0.5) 15%,
+    rgba(255, 140, 20, 0.9) 35%,
+    rgba(240, 100, 8,  0.7) 50%,
+    rgba(255, 150, 25, 0.85) 65%,
+    rgba(210, 70,  5,  0.4) 85%,
+    transparent 100%
+  );
+  filter: blur(1.5px);
+  animation: ih-pfCrackPulse 3s ease-in-out infinite alternate;
+}
+/* Secondary glow underneath the crack */
+.ih-pfLavaCrack::after {
+  content: "";
+  position: absolute;
+  inset: -6px -4px;
+  background: inherit;
+  filter: blur(6px);
+  opacity: 0.5;
+}
+
+@keyframes ih-pfCrackPulse {
+  from { opacity: 0.55; filter: blur(1.5px); }
+  to   { opacity: 1;    filter: blur(0.5px); }
+}
+
+/* ── Flame wisps ── */
+.ih-pfFlame {
+  position: absolute;
+  bottom: 0;
+  left: var(--x);
+  width:  var(--w);
+  height: var(--h);
+  border-radius: 50% 50% 28% 28%;
+  background: radial-gradient(
+    ellipse 52% 70% at 50% 88%,
+    rgba(245, 115, 12, 0.88) 0%,
+    rgba(200,  55,  5, 0.55) 38%,
+    rgba(160,  30,  4, 0.20) 62%,
+    transparent 80%
+  );
+  filter: blur(4.5px);
+  transform-origin: 50% 100%;
+  animation-name: ih-pfFlameRise;
+  animation-duration: var(--dur, 2.5s);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+  animation-fill-mode: both;
+}
+
+@keyframes ih-pfFlameRise {
+  0%   { opacity: 0;    transform: scaleX(1.0) scaleY(0.65) translateY(10px); }
+  10%  { opacity: 0.88; transform: scaleX(0.88) scaleY(1.0)  translateY(0); }
+  42%  { opacity: 0.72; transform: scaleX(0.68) scaleY(1.22) translateY(-26%) rotate(2deg); }
+  72%  { opacity: 0.38; transform: scaleX(0.46) scaleY(1.48) translateY(-60%) rotate(-3deg); }
+  100% { opacity: 0;    transform: scaleX(0.26) scaleY(1.70) translateY(-96%) rotate(2deg); }
+}
+
+/* ── Smoke wisps ── */
+.ih-pfSmoke {
+  position: absolute;
+  bottom: 18px;
+  left: var(--x);
+  width:  var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(55, 44, 38, 0.32) 0%, transparent 68%);
+  filter: blur(18px);
+  animation-name: ih-pfSmokeRise;
+  animation-duration: var(--dur, 5.8s);
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+  animation-fill-mode: both;
+}
+
+@keyframes ih-pfSmokeRise {
+  0%   { opacity: 0;    transform: translateY(0)     translateX(0)   scale(0.55); }
+  14%  { opacity: 0.28; transform: translateY(-18px) translateX(4px) scale(0.85); }
+  58%  { opacity: 0.18; transform: translateY(-110px) translateX(14px) scale(1.75); }
+  100% { opacity: 0;    transform: translateY(-210px) translateX(22px) scale(2.80); }
+}
+
+/* ── Floating embers ── */
+.ih-pfEmber {
+  position: absolute;
+  bottom: 4px;
+  left: var(--x);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 175, 28, 0.95);
+  box-shadow:
+    0 0  5px  2px rgba(255, 130,  8, 0.75),
+    0 0 10px  4px rgba(220,  80,  5, 0.35);
+  animation-name: ih-pfEmberFloat;
+  animation-duration: var(--dur, 3.8s);
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+  animation-fill-mode: both;
+}
+
+@keyframes ih-pfEmberFloat {
+  0%   { opacity: 0;    transform: translateY(0)     translateX(0);    }
+  8%   { opacity: 1; }
+  50%  { opacity: 0.85; transform: translateY(-140px) translateX(10px);  }
+  80%  { opacity: 0.4;  transform: translateY(-220px) translateX(-6px);  }
+  100% { opacity: 0;    transform: translateY(-290px) translateX(14px); }
+}
+
+/* noise grain layer (reused from main site) */
+.ih-presale .ih-bgNoise {
+  z-index: 3;
+}
+
+/* ══════════════════════════════════════
+   Owl ghost
+══════════════════════════════════════ */
+.ih-presaleOwlGhost {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(520px, 65vw);
+  z-index: 4;
+  pointer-events: none;
+  animation: ih-owlBreath 7s ease-in-out infinite;
+}
+
+.ih-presaleOwlGhost img {
+  width: 100%;
+  display: block;
+  opacity: 0.052;
+  filter:
+    brightness(1.2)
+    sepia(0.45)
+    hue-rotate(-8deg)
+    saturate(0.55)
+    drop-shadow(0 0 36px rgba(180, 110, 14, 0.45));
+}
+
+@keyframes ih-owlBreath {
+  0%, 100% { transform: translate(-50%, -50%) scale(1);     opacity: 1;   }
+  50%       { transform: translate(-50%, -50%) scale(1.022); opacity: 0.9; }
+}
+
+/* ══════════════════════════════════════
+   Header
+══════════════════════════════════════ */
+.ih-presaleHeader {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid rgba(var(--steel-rgb), 0.1);
+  background:
+    linear-gradient(180deg, rgba(6, 7, 9, 0.96), rgba(6, 7, 9, 0.84)),
+    linear-gradient(90deg, rgba(var(--gold-rgb), 0.03), transparent 30%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.ih-presaleHeaderInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.ih-presaleBack {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(var(--steel-rgb), 0.48);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.3s var(--ease-slow);
+}
+.ih-presaleBack:hover { color: rgba(var(--gold-rgb), 0.82); }
+
+/* ══════════════════════════════════════
+   Main layout
+══════════════════════════════════════ */
+.ih-presaleMain {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px 80px;
+  position: relative;
+  z-index: 10;
+}
+
+.ih-presaleInner {
+  width: 100%;
+  max-width: 580px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* ══════════════════════════════════════
+   Coin + Title block
+══════════════════════════════════════ */
+.ih-presaleTitleBlock {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ih-presaleCoinWrap {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.ih-presaleCoinGlow {
+  position: absolute;
+  inset: -24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(215, 120, 18, 0.38) 0%, rgba(180, 80, 8, 0.16) 44%, transparent 70%);
+  filter: blur(14px);
+  animation: ih-coinGlowPulse 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes ih-coinGlowPulse {
+  from { opacity: 0.6; transform: scale(0.94); }
+  to   { opacity: 1;   transform: scale(1.08); }
+}
+
+.ih-presaleCoin {
+  position: relative;
+  z-index: 1;
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 18px rgba(184, 150, 84, 0.45));
+}
+
+.ih-presaleEyebrow {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(var(--gold-rgb), 0.62);
+  margin-bottom: 12px;
+}
+
+.ih-presaleTitle {
+  font-family: "Trajan Pro", "Cinzel", Georgia, serif;
+  font-size: clamp(26px, 6vw, 44px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 14px;
+  line-height: 1.1;
+}
+
+.ih-presaleSubtitle {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 15px;
+  color: rgba(var(--steel-rgb), 0.66);
+  line-height: 1.6;
+  margin: 0;
+}
+.ih-presaleSubtitle strong {
+  color: rgba(var(--steel-rgb), 0.82);
+  font-weight: 500;
+}
+
+/* ══════════════════════════════════════
+   Stats row
+══════════════════════════════════════ */
+.ih-presaleStats {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: var(--surface-trim), var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  padding: 18px 20px;
+  box-shadow:
+    var(--surface-shadow),
+    inset 0 0 20px rgba(var(--gold-rgb), 0.03);
+}
+
+.ih-presaleStat {
+  flex: 1;
+  text-align: center;
+  min-width: 0;
+}
+
+.ih-presaleStatLabel {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(var(--steel-rgb), 0.52);
+  margin-bottom: 6px;
+}
+
+.ih-presaleStatValue {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-heading);
+  letter-spacing: 0.02em;
+}
+
+.ih-presaleStatDivider {
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(180deg, transparent, rgba(var(--steel-rgb), 0.18), transparent);
+  flex-shrink: 0;
+  margin: 0 10px;
+}
+
+/* ══════════════════════════════════════
+   Main panel card
+══════════════════════════════════════ */
+.ih-presalePanel {
+  width: 100%;
+  background: var(--surface-trim), var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow:
+    var(--surface-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 16px 40px rgba(160, 65, 8, 0.1),
+    0 4px  16px rgba(var(--gold-rgb), 0.07);
+  padding: 28px;
+}
+
+.ih-presalePanelHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.ih-presalePanelTitle {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.ih-presalePanelSub {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(var(--steel-rgb), 0.46);
+}
+
+/* ── SOL input ── */
+.ih-presaleField {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.ih-presaleFieldLabel {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(var(--steel-rgb), 0.58);
+}
+
+.ih-presaleInputRow {
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(180deg, rgba(52, 61, 72, 0.72), rgba(23, 29, 38, 0.95)),
+    linear-gradient(90deg, rgba(var(--gold-rgb), 0.025), transparent 20%);
+  border: 1px solid rgba(var(--steel-rgb), 0.18);
+  border-radius: var(--radius-tight);
+  transition: border-color 0.4s var(--ease-slow), box-shadow 0.4s var(--ease-slow);
+}
+.ih-presaleInputRow:focus-within {
+  border-color: rgba(var(--gold-rgb), 0.48);
+  box-shadow: 0 0 0 3px rgba(var(--gold-rgb), 0.06), inset 0 0 10px rgba(var(--gold-rgb), 0.03);
+}
+
+.ih-presaleInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-heading);
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  padding: 14px 16px;
+  min-width: 0;
+}
+.ih-presaleInput::placeholder { color: rgba(var(--steel-rgb), 0.22); }
+.ih-presaleInput:disabled      { opacity: 0.42; }
+.ih-presaleInput::-webkit-outer-spin-button,
+.ih-presaleInput::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.ih-presaleInput[type=number]               { -moz-appearance: textfield; }
+
+.ih-presaleInputUnit {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(var(--steel-rgb), 0.42);
+  padding-right: 16px;
+  flex-shrink: 0;
+}
+
+/* ── Output display ── */
+.ih-presaleOutput {
+  background:
+    linear-gradient(180deg, rgba(var(--gold-rgb), 0.045) 0%, transparent 52%),
+    linear-gradient(180deg, rgba(36, 44, 56, 0.55), rgba(19, 25, 33, 0.72));
+  border: 1px solid rgba(var(--gold-rgb), 0.13);
+  border-radius: var(--radius-soft);
+  padding: 20px 20px 16px;
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.ih-presaleOutputLabel {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(var(--steel-rgb), 0.48);
+  margin-bottom: 10px;
+}
+
+.ih-presaleOutputValue {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: clamp(28px, 5.5vw, 40px);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.ih-presaleOutputEmpty { color: rgba(var(--steel-rgb), 0.22); }
+
+.ih-presaleOutputUnit {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(var(--steel-rgb), 0.42);
+  margin-bottom: 8px;
+}
+
+.ih-presaleOutputUsd {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 12px;
+  color: rgba(var(--steel-rgb), 0.38);
+  letter-spacing: 0.04em;
+}
+
+/* ── Separator ── */
+.ih-presaleSep {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(var(--steel-rgb), 0.12), transparent);
+  margin-bottom: 18px;
+}
+
+/* ── CTA button ── */
+.ih-presaleCta {
+  width: 100%;
+  padding: 15px 24px;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  border-radius: var(--radius-soft);
+  margin-bottom: 12px;
+}
+.ih-presaleCta:not(:disabled):hover {
+  box-shadow: 0 8px 24px rgba(170, 80, 8, 0.28), 0 0 36px rgba(var(--gold-rgb), 0.18);
+}
+.ih-presaleCta:disabled {
+  opacity: 0.36;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.ih-presaleWallet {
+  text-align: center;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: rgba(var(--steel-rgb), 0.35);
+  margin-bottom: 10px;
+}
+
+.ih-presaleError {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 13px;
+  color: rgba(220, 90, 90, 0.9);
+  background: rgba(220, 90, 90, 0.06);
+  border: 1px solid rgba(220, 90, 90, 0.15);
+  border-radius: var(--radius-tight);
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.ih-presaleDisclaimer {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 11px;
+  line-height: 1.65;
+  color: rgba(var(--steel-rgb), 0.32);
+  text-align: center;
+  letter-spacing: 0.03em;
+}
+
+/* ══════════════════════════════════════
+   Success state
+══════════════════════════════════════ */
+.ih-presaleSuccess {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 8px;
+  gap: 14px;
+}
+.ih-presaleSuccessIcon { margin-bottom: 2px; }
+
+.ih-presaleSuccessTitle {
+  font-family: "Trajan Pro", "Cinzel", Georgia, serif;
+  font-size: clamp(17px, 4vw, 22px);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.ih-presaleSuccessBody {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(var(--steel-rgb), 0.76);
+  margin: 0;
+}
+.ih-presaleSuccessBody strong { color: var(--text-heading); font-weight: 600; }
+
+.ih-presaleLink {
+  color: rgba(var(--gold-rgb), 0.82);
+  text-decoration: none;
+  transition: color 0.25s;
+}
+.ih-presaleLink:hover { color: var(--accent-gold-bright); }
+
+.ih-presaleTxLink {
+  display: inline-block;
+  margin-top: 4px;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: rgba(var(--steel-rgb), 0.42);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(var(--steel-rgb), 0.16);
+  transition: color 0.25s, border-color 0.25s;
+}
+.ih-presaleTxLink:hover {
+  color: rgba(var(--gold-rgb), 0.78);
+  border-color: rgba(var(--gold-rgb), 0.26);
+}
+
+/* ── Footer note ── */
+.ih-presaleFootNote {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgba(var(--steel-rgb), 0.2);
+  text-align: center;
+}
+
+/* ══════════════════════════════════════
+   Responsive
+══════════════════════════════════════ */
+@media (max-width: 600px) {
+  .ih-presaleMain  { padding: 32px 16px 56px; }
+  .ih-presalePanel { padding: 20px 18px; }
+
+  .ih-presaleStats {
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px;
+  }
+  .ih-presaleStatDivider {
+    width: 52px;
+    height: 1px;
+    margin: 0;
+    background: linear-gradient(90deg, transparent, rgba(var(--steel-rgb), 0.14), transparent);
+  }
+  .ih-presalePanelHeader {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .ih-presaleOwlGhost { width: min(380px, 88vw); }
+}
+
+/* ── Reduce motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .ih-pfFlame, .ih-pfSmoke, .ih-pfEmber,
+  .ih-pfBase, .ih-pfLavaCrack,
+  .ih-presaleCoin, .ih-presaleCoinGlow,
+  .ih-presaleOwlGhost {
+    animation: none !important;
+  }
+}

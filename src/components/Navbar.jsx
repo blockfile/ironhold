@@ -125,8 +125,8 @@ export default function Navbar() {
                             </nav>
 
                             <div className="ih-navDesktopActions">
-
-                                <button className="ih-btn ih-btn--primary" type="button">Buy</button>
+                                <a href="/rewards" className="ih-btn ih-btn--ghost">Rewards</a>
+                                <a href="/presale" className="ih-btn ih-btn--primary">Presale</a>
                             </div>
                         </div>
 
@@ -174,8 +174,8 @@ export default function Navbar() {
                     ))}
                 </nav>
                 <div className="ih-navMobileActions">
-
-                    <button className="ih-btn ih-btn--primary" type="button">Buy</button>
+                    <a href="/rewards" className="ih-btn ih-btn--ghost">Rewards</a>
+                    <a href="/presale" className="ih-btn ih-btn--primary">Presale</a>
                 </div>
             </div>
         </>

@@ -1,0 +1,177 @@
+/* ═══════════════════════════════════════════════
+   Ironhold — Rewards Page Styles
+   ═══════════════════════════════════════════════ */
+
+/* ── Timer panel ── */
+.ih-rwTimerPanel {
+  text-align: center;
+  padding: 2.5rem 2rem 2rem;
+}
+
+.ih-rwTimerLabel {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  opacity: 0.85;
+}
+
+/* ── Clock digits ── */
+.ih-rwClock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1em;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.ih-rwClockDigits {
+  font-size: clamp(3.5rem, 12vw, 6.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #dfbd78;
+  text-shadow:
+    0 0 32px rgba(223, 189, 120, 0.45),
+    0 0 64px rgba(223, 189, 120, 0.18);
+  font-family: "Courier New", Courier, monospace;
+}
+
+.ih-rwClockColon {
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  font-weight: 700;
+  color: rgba(223, 189, 120, 0.5);
+  animation: ih-rwBlink 1s step-start infinite;
+  font-family: "Courier New", Courier, monospace;
+  margin: 0 0.05em;
+  line-height: 1;
+  padding-bottom: 0.08em;
+}
+
+@keyframes ih-rwBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.15; }
+}
+
+/* ── Progress bar ── */
+.ih-rwProgressTrack {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 99px;
+  overflow: hidden;
+  margin: 0 auto 1.25rem;
+  max-width: 320px;
+}
+
+.ih-rwProgressBar {
+  height: 100%;
+  background: linear-gradient(90deg, #b89654, #dfbd78);
+  border-radius: 99px;
+  transition: width 1s linear;
+  box-shadow: 0 0 8px rgba(223, 189, 120, 0.5);
+}
+
+.ih-rwTimerNote {
+  font-size: 0.75rem;
+  color: rgba(214, 220, 227, 0.45);
+  letter-spacing: 0.04em;
+}
+
+/* ── Calculator panel ── */
+.ih-rwCalcPanel {
+  margin-top: 1.25rem;
+}
+
+/* ── Result rows ── */
+.ih-rwResultRow {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(184, 150, 84, 0.12);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.ih-rwResultLabel {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(214, 220, 227, 0.55);
+  margin-bottom: 0.4rem;
+}
+
+.ih-rwResultValue {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.ih-rwResultUnit {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(214, 220, 227, 0.55);
+}
+
+.ih-rwResultSub {
+  font-size: 0.72rem;
+  color: rgba(184, 150, 84, 0.65);
+  margin-top: 0.3rem;
+  letter-spacing: 0.04em;
+}
+
+/* ── Price input prefix ── */
+.ih-rwPricePrefix {
+  display: flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  color: rgba(214, 220, 227, 0.5);
+  font-size: 1rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px 0 0 8px;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ih-rwPriceInput {
+  border-radius: 0 8px 8px 0 !important;
+}
+
+/* ── Summary block ── */
+.ih-rwSummary {
+  background: rgba(184, 150, 84, 0.06);
+  border: 1px solid rgba(184, 150, 84, 0.18);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.ih-rwSummaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  padding: 0.35rem 0;
+  color: rgba(214, 220, 227, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ih-rwSummaryRow:last-child {
+  border-bottom: none;
+}
+
+.ih-rwSummaryRow strong {
+  font-weight: 600;
+  color: rgba(214, 220, 227, 0.9);
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .ih-rwTimerPanel {
+    padding: 2rem 1.25rem 1.5rem;
+  }
+}

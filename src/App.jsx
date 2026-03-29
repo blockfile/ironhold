@@ -11,13 +11,24 @@ import ScrambleText from "./components/ScrambleText";
 import Footer from "./components/Footer";
 import LoadingScreen from "./components/LoadingScreen";
 import ForgeScene from "./components/ForgeScene";
+import PresalePage from "./components/PresalePage";
+import RewardsPage from "./components/RewardsPage";
 import { popIn, riseSoft, stagger, viewport } from "./lib/motion";
 import coinImage from "./components/assets/images/coin.png";
+
+const IS_PRESALE = window.location.pathname === "/presale";
+const IS_REWARDS = window.location.pathname === "/rewards";
 
 const LOADER_DURATION_MS = 4000;
 const LOADER_EXIT_MS = 420;
 
 export default function App() {
+  if (IS_PRESALE) return <PresalePage />;
+  if (IS_REWARDS) return <RewardsPage />;
+  return <MainApp />;
+}
+
+function MainApp() {
   const [loaderPhase, setLoaderPhase] = useState("active");
   const [showApp, setShowApp] = useState(false);
 
@@ -193,3 +204,4 @@ export default function App() {
     </>
   );
 }
+
