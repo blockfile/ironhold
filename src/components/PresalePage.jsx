@@ -127,18 +127,15 @@ export default function PresalePage() {
         "https://api.mainnet-beta.solana.com",
       ];
 
-      let connection, blockhash, lastValidBlockHeight;
-      let rpcError;
+      let connection, blockhash;
       for (const url of RPC_URLS) {
         try {
           const conn = new web3.Connection(url, "confirmed");
           const bh = await conn.getLatestBlockhash();
           connection = conn;
           blockhash = bh.blockhash;
-          lastValidBlockHeight = bh.lastValidBlockHeight;
           break;
         } catch (e) {
-          rpcError = e;
         }
       }
       if (!connection) throw new Error("Unable to reach Solana network. Please try again shortly.");
