@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { PRESALE_CLOSED_LABEL, PRESALE_IS_OPEN } from "../lib/presale";
 import "../styles/presale.css";
 import owlImg from "./assets/images/owl.png";
 import coinImg from "./assets/images/logo.png";
 
-// ── Lava/fire particle config ─────────────────────
 const FLAMES = [
   { x: "4%", delay: "0s", dur: "2.4s", w: "26px", h: "68px" },
   { x: "14%", delay: "1.1s", dur: "2.9s", w: "38px", h: "100px" },
@@ -33,19 +33,18 @@ const EMBERS = [
   { x: "94%", delay: "2.1s", dur: "3.7s" },
 ];
 
-
 const PRESALE_WALLET = "DZppXmrs1zD2xXV7V3qPnqXqR1SJCK5j7MriNXA6x7tZ";
-const TOTAL_SUPPLY = 1_000_000_000;   // 1 billion
-const MARKET_CAP_USD = 100_000;       // $100k
-const TOKEN_PRICE_USD = MARKET_CAP_USD / TOTAL_SUPPLY; // $0.0001
+const TOTAL_SUPPLY = 1_000_000_000;
+const MARKET_CAP_USD = 100_000;
+const TOKEN_PRICE_USD = MARKET_CAP_USD / TOTAL_SUPPLY;
 
 function formatNumber(value, decimals = 0) {
-  if (!Number.isFinite(value) || value <= 0) return "—";
+  if (!Number.isFinite(value) || value <= 0) return "-";
   return new Intl.NumberFormat("en-US", { maximumFractionDigits: decimals }).format(value);
 }
 
 function formatUsd(value) {
-  if (!Number.isFinite(value) || value <= 0) return "—";
+  if (!Number.isFinite(value) || value <= 0) return "-";
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -62,23 +61,38 @@ export default function PresalePage() {
   const [solAmount, setSolAmount] = useState("");
   const [solPrice, setSolPrice] = useState(null);
   const [priceLoading, setPriceLoading] = useState(true);
-
-  const [txStatus, setTxStatus] = useState("idle"); // idle | connecting | sending | success | error
+  const [txStatus, setTxStatus] = useState("idle");
   const [txSignature, setTxSignature] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Fetch live SOL price on mount
   useEffect(() => {
+    if (!PRESALE_IS_OPEN) {
+      setPriceLoading(false);
+      return undefined;
+    }
+
+    let isActive = true;
+
     fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd")
-      .then((r) => r.json())
-      .then((data) => setSolPrice(data?.solana?.usd ?? null))
-      .catch(() => setSolPrice(null))
-      .finally(() => setPriceLoading(false));
+      .then((response) => response.json())
+      .then((data) => {
+        if (isActive) setSolPrice(data?.solana?.usd ?? null);
+      })
+      .catch(() => {
+        if (isActive) setSolPrice(null);
+      })
+      .finally(() => {
+        if (isActive) setPriceLoading(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   const parsedSol = useMemo(() => {
-    const n = parseFloat(solAmount);
-    return Number.isFinite(n) && n > 0 ? n : 0;
+    const amount = parseFloat(solAmount);
+    return Number.isFinite(amount) && amount > 0 ? amount : 0;
   }, [solAmount]);
 
   const usdValue = useMemo(() => {
@@ -92,9 +106,17 @@ export default function PresalePage() {
   }, [usdValue]);
 
   const isSubmitting = txStatus === "connecting" || txStatus === "sending";
+  const isPresaleClosed = !PRESALE_IS_OPEN;
+  const showSuccessState = PRESALE_IS_OPEN && txStatus === "success";
 
   async function handleBuy() {
     setErrorMsg("");
+
+    if (isPresaleClosed) {
+      setTxStatus("idle");
+      setErrorMsg("Presale is closed. Buying has been disabled.");
+      return;
+    }
 
     if (!parsedSol) {
       setErrorMsg("Please enter a valid SOL amount.");
@@ -117,28 +139,29 @@ export default function PresalePage() {
     try {
       setTxStatus("sending");
 
-      // Connect (silent if already authorised, shows Phantom popup if not)
       const { publicKey: fromPubkey } = await phantom.connect();
-
-      // Try multiple free RPCs in order until one works
-      const RPC_URLS = [
+      const rpcUrls = [
         "https://rpc.ankr.com/solana",
         "https://solana.publicnode.com",
         "https://api.mainnet-beta.solana.com",
       ];
 
-      let connection, blockhash;
-      for (const url of RPC_URLS) {
+      let connection;
+      let blockhash;
+
+      for (const url of rpcUrls) {
         try {
           const conn = new web3.Connection(url, "confirmed");
-          const bh = await conn.getLatestBlockhash();
+          const latestBlockhash = await conn.getLatestBlockhash();
           connection = conn;
-          blockhash = bh.blockhash;
+          blockhash = latestBlockhash.blockhash;
           break;
-        } catch (e) {
-        }
+        } catch {}
       }
-      if (!connection) throw new Error("Unable to reach Solana network. Please try again shortly.");
+
+      if (!connection) {
+        throw new Error("Unable to reach Solana network. Please try again shortly.");
+      }
 
       const lamports = Math.round(parsedSol * web3.LAMPORTS_PER_SOL);
 
@@ -153,64 +176,62 @@ export default function PresalePage() {
       transaction.recentBlockhash = blockhash;
       transaction.feePayer = fromPubkey;
 
-      // Phantom shows its approval popup here — signature means it's been broadcast
       const { signature } = await phantom.signAndSendTransaction(transaction);
-
-      // Show success immediately; confirmation happens on-chain regardless
       setTxSignature(signature);
       setTxStatus("success");
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       const isRejected =
-        err?.code === 4001 ||
-        err?.message?.toLowerCase().includes("user rejected") ||
-        err?.message?.toLowerCase().includes("cancelled");
+        error?.code === 4001 ||
+        error?.message?.toLowerCase().includes("user rejected") ||
+        error?.message?.toLowerCase().includes("cancelled");
+
       setErrorMsg(
-        isRejected ? "Transaction cancelled." : (err?.message || "Transaction failed. Please try again.")
+        isRejected ? "Transaction cancelled." : (error?.message || "Transaction failed. Please try again.")
       );
       setTxStatus("idle");
     }
   }
 
-  const btnLabel = txStatus === "sending" ? "Awaiting approval…" : "Buy $IHOLD";
+  const btnLabel = isPresaleClosed
+    ? PRESALE_CLOSED_LABEL
+    : txStatus === "sending"
+      ? "Awaiting approval..."
+      : "Buy $IHOLD";
 
   return (
     <div className="ih-presale">
-
-      {/* ── Lava / fire effects ── */}
       <div className="ih-pf" aria-hidden="true">
         <div className="ih-pfBase" />
         <div className="ih-pfLavaCrack" />
-        {FLAMES.map((f, i) => (
+        {FLAMES.map((flame, index) => (
           <div
-            key={i}
+            key={index}
             className="ih-pfFlame"
-            style={{ "--x": f.x, "--delay": f.delay, "--dur": f.dur, "--w": f.w, "--h": f.h }}
+            style={{ "--x": flame.x, "--delay": flame.delay, "--dur": flame.dur, "--w": flame.w, "--h": flame.h }}
           />
         ))}
-        {SMOKES.map((s, i) => (
+        {SMOKES.map((smoke, index) => (
           <div
-            key={i}
+            key={index}
             className="ih-pfSmoke"
-            style={{ "--x": s.x, "--delay": s.delay, "--dur": s.dur, "--size": s.size }}
+            style={{ "--x": smoke.x, "--delay": smoke.delay, "--dur": smoke.dur, "--size": smoke.size }}
           />
         ))}
-        {EMBERS.map((e, i) => (
+        {EMBERS.map((ember, index) => (
           <div
-            key={i}
+            key={index}
             className="ih-pfEmber"
-            style={{ "--x": e.x, "--delay": e.delay, "--dur": e.dur }}
+            style={{ "--x": ember.x, "--delay": ember.delay, "--dur": ember.dur }}
           />
         ))}
       </div>
       <div className="ih-bgNoise" aria-hidden="true" />
 
-      {/* ── Owl ghost (atmospheric, behind content) ── */}
       <div className="ih-presaleOwlGhost" aria-hidden="true">
         <img src={owlImg} alt="" />
       </div>
 
-      {/* ── Header ── */}
       <header className="ih-presaleHeader">
         <div className="ih-container ih-presaleHeaderInner">
           <a href="/" className="ih-logo" aria-label="Back to Ironhold home">
@@ -222,11 +243,10 @@ export default function PresalePage() {
             </span>
             <span className="ih-logoText">IRONHOLD</span>
           </a>
-          <a href="/" className="ih-presaleBack">← Back to Home</a>
+          <a href="/" className="ih-presaleBack">&larr; Back to Home</a>
         </div>
       </header>
 
-      {/* ── Main content ── */}
       <main className="ih-presaleMain">
         <motion.div
           className="ih-presaleInner"
@@ -234,23 +254,25 @@ export default function PresalePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
         >
-
-          {/* ── Coin + Title ── */}
           <div className="ih-presaleTitleBlock">
-            {/* Spinning/floating coin */}
             <div className="ih-presaleCoinWrap" aria-hidden="true">
               <div className="ih-presaleCoinGlow" />
               <img src={coinImg} alt="" className="ih-presaleCoin" />
             </div>
 
-            <div className="ih-presaleEyebrow">Limited Offering</div>
+            <div className="ih-presaleEyebrow">{isPresaleClosed ? "Presale Closed" : "Limited Offering"}</div>
             <h1 className="ih-presaleTitle ih-goldTextStrong">IRONHOLD PRESALE</h1>
             <p className="ih-presaleSubtitle">
-              Secure your <strong>$IHOLD</strong> allocation before public launch.
+              {isPresaleClosed ? (
+                <>The presale page remains available, but buying is now disabled.</>
+              ) : (
+                <>
+                  Secure your <strong>$IHOLD</strong> allocation before public launch.
+                </>
+              )}
             </p>
           </div>
 
-          {/* ── Stats row ── */}
           <motion.div
             className="ih-presaleStats"
             initial={{ opacity: 0, y: 14 }}
@@ -273,7 +295,6 @@ export default function PresalePage() {
             </div>
           </motion.div>
 
-          {/* ── Main panel ── */}
           <motion.div
             className="ih-presalePanel"
             initial={{ opacity: 0, y: 18 }}
@@ -281,9 +302,7 @@ export default function PresalePage() {
             transition={{ duration: 0.6, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
           >
             <AnimatePresence mode="wait">
-              {txStatus === "success" ? (
-
-                /* ── Success state ── */
+              {showSuccessState ? (
                 <motion.div
                   key="success"
                   className="ih-presaleSuccess"
@@ -328,27 +347,27 @@ export default function PresalePage() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      View transaction on Solscan ↗
+                      View transaction on Solscan -&gt;
                     </a>
                   )}
                 </motion.div>
-
               ) : (
-
-                /* ── Purchase form ── */
                 <motion.div key="form" exit={{ opacity: 0 }}>
                   <div className="ih-presalePanelHeader">
-                    <div className="ih-presalePanelTitle ih-goldTextStrong">Purchase $IHOLD</div>
+                    <div className="ih-presalePanelTitle ih-goldTextStrong">
+                      {isPresaleClosed ? PRESALE_CLOSED_LABEL : "Purchase $IHOLD"}
+                    </div>
                     <div className="ih-presalePanelSub">
-                      {priceLoading
-                        ? "Fetching SOL price…"
-                        : solPrice
-                          ? `1 SOL ≈ ${formatUsd(solPrice)}`
-                          : "SOL price unavailable"}
+                      {isPresaleClosed
+                        ? "Buying disabled"
+                        : priceLoading
+                          ? "Fetching SOL price..."
+                          : solPrice
+                            ? `1 SOL ~= ${formatUsd(solPrice)}`
+                            : "SOL price unavailable"}
                     </div>
                   </div>
 
-                  {/* SOL input */}
                   <div className="ih-presaleField">
                     <label className="ih-presaleFieldLabel" htmlFor="ih-sol-amount">
                       Amount of SOL to spend
@@ -362,45 +381,49 @@ export default function PresalePage() {
                         step="0.01"
                         placeholder="0.00"
                         value={solAmount}
-                        onChange={(e) => setSolAmount(e.target.value)}
-                        disabled={isSubmitting}
+                        onChange={(event) => setSolAmount(event.target.value)}
+                        disabled={isSubmitting || isPresaleClosed}
                         autoComplete="off"
                       />
                       <span className="ih-presaleInputUnit">SOL</span>
                     </div>
                   </div>
 
-                  {/* Output display */}
                   <div className="ih-presaleOutput">
                     <div className="ih-presaleOutputLabel">You will receive</div>
                     <div className={`ih-presaleOutputValue${iholdAmount > 0 ? " ih-goldTextStrong" : " ih-presaleOutputEmpty"}`}>
                       {formatNumber(iholdAmount, 0)}
                     </div>
                     <div className="ih-presaleOutputUnit">$IHOLD</div>
-                    {usdValue > 0 && (
-                      <div className="ih-presaleOutputUsd">≈ {formatUsd(usdValue)} at current SOL price</div>
+                    {usdValue > 0 && !isPresaleClosed && (
+                      <div className="ih-presaleOutputUsd">~= {formatUsd(usdValue)} at current SOL price</div>
                     )}
                   </div>
 
                   <div className="ih-presaleSep" aria-hidden="true" />
 
-                  {/* CTA */}
                   <button
                     className="ih-btn ih-btn--primary ih-presaleCta"
                     type="button"
                     onClick={handleBuy}
-                    disabled={isSubmitting || !parsedSol}
+                    disabled={isPresaleClosed || isSubmitting || !parsedSol}
                   >
                     {btnLabel}
                   </button>
 
-                  {txStatus === "sending" && (
+                  {isPresaleClosed && (
+                    <div className="ih-presaleDisclaimer">
+                      The presale is closed. This page is still available for reference, but purchases are disabled.
+                    </div>
+                  )}
+
+                  {!isPresaleClosed && txStatus === "sending" && (
                     <div className="ih-presalePhantomHint">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                         <circle cx="8" cy="8" r="7" stroke="rgba(184,150,84,0.6)" strokeWidth="1.2" />
                         <path d="M8 4.5v4M8 10.5v1" stroke="#dfbd78" strokeWidth="1.4" strokeLinecap="round" />
                       </svg>
-                      Check your Phantom wallet — an approval popup should appear in your browser extension.
+                      Check your Phantom wallet. An approval popup should appear in your browser extension.
                     </div>
                   )}
 
@@ -408,17 +431,19 @@ export default function PresalePage() {
                     <div className="ih-presaleError" role="alert">{errorMsg}</div>
                   )}
 
-                  <div className="ih-presaleDisclaimer">
-                    This is a presale. No tokens are minted at this time. $IHOLD will be
-                    distributed manually to your wallet one day before the public launch.
-                  </div>
+                  {!isPresaleClosed && (
+                    <div className="ih-presaleDisclaimer">
+                      This is a presale. No tokens are minted at this time. $IHOLD will be
+                      distributed manually to your wallet one day before the public launch.
+                    </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
           </motion.div>
 
           <div className="ih-presaleFootNote">
-            © {new Date().getFullYear()} Ironhold. All rights reserved.
+            &copy; {new Date().getFullYear()} Ironhold. All rights reserved.
           </div>
         </motion.div>
       </main>
