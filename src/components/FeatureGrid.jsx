@@ -22,10 +22,10 @@ const features = [
     metric: "Proportional"
   },
   {
-    title: "10% Liquidity Tax",
-    desc: "Buy/sell tax is directed to strengthen liquidity and improve long-term market depth.",
+    title: "17% Transfer Fee",
+    desc: "Transfer fee is directed to strengthen liquidity and improve long-term market depth.",
     tag: "Liquidity / 04",
-    metric: "10% tx"
+    metric: "17% fee"
   },
   {
     title: "LP Ratio Targeting",

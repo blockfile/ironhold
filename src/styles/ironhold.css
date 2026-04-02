@@ -79,6 +79,7 @@
   --radius-tight: 8px;
   --container: 1360px;
   --ease-slow: cubic-bezier(0.22, 1, 0.36, 1);
+  --anchor-offset: calc(118px + env(safe-area-inset-top, 0px));
 }
 
 * {
@@ -91,6 +92,10 @@ body {
   margin: 0;
   scroll-behavior: smooth;
   overflow-x: hidden;
+}
+
+html {
+  scroll-padding-top: var(--anchor-offset);
 }
 
 body {
@@ -1203,7 +1208,7 @@ a {
 .ih-section {
   position: relative;
   padding: 140px 0;
-  scroll-margin-top: 108px;
+  scroll-margin-top: var(--anchor-offset);
   --surface-bg:
     linear-gradient(180deg, rgba(67, 78, 91, 0.78), rgba(25, 31, 40, 0.96)),
     linear-gradient(124deg, rgba(223, 231, 238, 0.08), rgba(72, 81, 92, 0.05) 34%, rgba(20, 26, 33, 0) 68%),
@@ -2862,6 +2867,10 @@ a {
 }
 
 @media (max-width: 767px) {
+  :root {
+    --anchor-offset: calc(132px + env(safe-area-inset-top, 0px));
+  }
+
   html,
   body,
   .ih-navMobile,
@@ -3248,7 +3257,7 @@ a {
 
   .ih-section {
     padding: 92px 0;
-    scroll-margin-top: 86px;
+    scroll-margin-top: var(--anchor-offset);
   }
 
   .ih-grid,

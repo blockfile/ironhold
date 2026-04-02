@@ -16,7 +16,7 @@ const summaryCards = [
     points: [
       "Fixed total supply: 1,000,000,000 $IHOLD",
       "No minting, no rebasing, no inflation",
-      "10% buy/sell tax supports liquidity depth"
+      "17% transfer fee supports liquidity depth"
     ]
   },
   {
